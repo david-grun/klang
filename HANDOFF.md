@@ -6,17 +6,29 @@ Read this first when resuming the project.
 
 Klang is a small Python-like language core written in dependency-free
 JavaScript ES modules. The core compiler/interpreter pipeline is present:
-lexer, parser, resolver, semantic checker, and interpreter. The showcase uses a
-German-classical score theme: source tokens trigger animated notes above the
-editor, while generated piano-like music plays during the slowed presentation
-of the compile/interpreter pipeline.
-The code is in the intended `src/` layout, with language design notes in
-`docs/`.
+lexer, parser, resolver, semantic checker, and interpreter. The code is in the
+intended `src/` layout, with language design notes in `docs/`.
 
-The current web layer is intentionally static and deployable: no package
+The showcase uses a pixel-art dawn theme (soft pastel cityscape: coral sun,
+cherry-blossom branch with a perched bird, blue-gray skyline + bridge/train
+over water, drifting petals). The audio concept is "one instrument per
+pipeline stage": each stage joins in as it activates so a clean run builds up
+like a short symphony, and an error cuts the remaining instruments off. The
+instrument map (all pure Web Audio, no Tone.js / CDN):
+
+- lexer -> triangle synth
+- parser -> plucked string (Karplus-Strong)
+- scope -> soft pad
+- semantic -> bell / FM
+- execute -> percussive membrane (one hit per output line)
+
+The web layer lives in `index.html` (scene + workbench markup), `styles.css`
+(palette + scene animations), `sound.js` (the five instruments), and `app.js`
+(editor highlighting, the Symphony canvas roll, the pipeline sidebar, and the
+run orchestration that drives visuals and audio together off the real
+`pipeline.run` result). It is intentionally static and deployable: no package
 install is required, and `npm run build` copies the browser showcase into
-`dist/`. Tone.js can still be added later if the project needs richer
-instruments, but the current sound layer works through the Web Audio API.
+`dist/`.
 
 ## Layout
 
@@ -73,13 +85,14 @@ static `dist/` folder that can be deployed later to a static host.
 
 ## Next useful steps
 
-1. Initialize git and commit this core baseline.
-2. Build a browser shell with a code editor, Run button, output panel, and
-   failed-stage display.
-3. Render real stage artifacts from `pipeline.js`: tokens first, then AST,
-   scope, semantic status, and output.
-4. Add Tone.js audio after the visual pipeline works, using the existing
-   `emit` callback and stage status data.
+1. Optionally re-expose the raw stage artifacts (tokens / AST / scope) in a
+   collapsible "details" panel; the old inspector tabs were dropped in the
+   pixel-art redesign to match the focused mockup.
+2. Use the interpreter `emit` events (already collected in `app.js`) to drive
+   finer-grained execute-stage audio, e.g. one membrane hit per real print
+   rather than per output line.
+3. Add a share/deploy step for `dist/` (static host) and a screenshot/preview
+   in the README.
 
 ## Caveats
 
