@@ -1,0 +1,15 @@
+class Counter:
+    def __init__(self, start):
+        self._n = start
+
+    def bump(self):
+        self._n = self._n + 1
+
+    def value(self):
+        return self._n
+
+c = Counter(10)
+for i in range(3):
+    c.bump()
+
+print(c.value())

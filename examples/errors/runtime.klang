@@ -1,0 +1,4 @@
+def divide(x):
+    return 1 / x
+
+print(divide(0))

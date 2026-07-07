@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Klang</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>Klang</h1>
+          <p>A playful compiler performance for code, notes, and piano</p>
+        </div>
+        <div class="controls">
+          <label class="sample-picker">
+            <span>Sample</span>
+            <select id="sampleSelect"></select>
+          </label>
+          <label class="sound-toggle">
+            <input id="soundToggle" type="checkbox" checked>
+            <span>Sound</span>
+          </label>
+          <span id="soundStatus" class="sound-status">ready</span>
+          <button id="resetButton" type="button">Reset</button>
+          <button id="runButton" type="button" class="primary">Run</button>
+        </div>
+      </header>
+
+      <section id="theaterStage" class="theater-stage" aria-label="Klang theater performance">
+        <div class="curtain curtain-left"></div>
+        <div class="curtain curtain-right"></div>
+        <div class="spotlight spotlight-left"></div>
+        <div class="spotlight spotlight-right"></div>
+        <div class="backdrop-windows" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="orchestra" aria-hidden="true">
+          <div class="performer violinist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="arm arm-bow"></div>
+            <div class="instrument violin"></div>
+          </div>
+          <div class="performer pianist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="piano">
+              <span class="piano-lid"></span>
+              <span class="piano-keys"></span>
+            </div>
+            <div class="hand hand-left"></div>
+            <div class="hand hand-right"></div>
+          </div>
+          <div class="performer flutist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="arm arm-flute"></div>
+            <div class="instrument flute"></div>
+          </div>
+        </div>
+        <div class="stage-front">
+          <span>Klang Theater</span>
+        </div>
+      </section>
+
+      <section class="stage-strip" aria-label="Pipeline stages" id="stageStrip"></section>
+
+      <section class="workspace">
+        <div class="source-pane">
+          <div class="pane-head">
+            <h2>Source</h2>
+            <span id="sourceMeta"></span>
+          </div>
+          <div class="source-editor">
+            <textarea id="sourceInput" spellcheck="false" aria-label="Klang source"></textarea>
+            <div id="sourceNoteLayer" class="source-note-layer" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="result-pane">
+          <div class="pane-head">
+            <h2>Output</h2>
+            <span id="runStatus"></span>
+          </div>
+          <pre id="outputBox" class="output-box"></pre>
+          <pre id="errorBox" class="error-box"></pre>
+        </div>
+      </section>
+
+      <section class="visual-pane">
+        <div class="pane-head">
+          <h2>Token Score</h2>
+          <span id="tokenCount"></span>
+        </div>
+        <div id="tokenRoll" class="token-roll" aria-label="Token roll"></div>
+      </section>
+
+      <section class="inspector-pane">
+        <div class="tabs" role="tablist" aria-label="Pipeline artifact tabs">
+          <button type="button" class="tab is-active" data-tab="tokens">Tokens</button>
+          <button type="button" class="tab" data-tab="ast">AST</button>
+          <button type="button" class="tab" data-tab="scope">Scope</button>
+          <button type="button" class="tab" data-tab="events">Events</button>
+        </div>
+        <pre id="inspector" class="inspector"></pre>
+      </section>
+
+      <section class="showcase-grid" aria-label="Klang project details">
+        <article class="showcase-panel narrative">
+          <h2>Project</h2>
+          <p>
+            Klang keeps Python-like syntax familiar, then stages compilation
+            like a tiny theater performance: the piano carries the tune while
+            each source token pops into view as a note.
+          </p>
+        </article>
+        <article class="showcase-panel">
+          <h2>Language Core</h2>
+          <ul>
+            <li>Indentation-based blocks</li>
+            <li>Functions, closures, and recursion</li>
+            <li>Classes, instances, and methods</li>
+            <li>Gradual semantic checks</li>
+          </ul>
+        </article>
+        <article class="showcase-panel">
+          <h2>Sound Map</h2>
+          <div class="phase-list">
+            <span>Playful piano</span>
+            <span>Token note pops</span>
+            <span>Stage lights</span>
+            <span>Final bow</span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

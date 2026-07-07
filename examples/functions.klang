@@ -1,0 +1,13 @@
+def make_adder(n):
+    def add(x):
+        return x + n
+    return add
+
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+add_five = make_adder(5)
+print(add_five(10))
+print(factorial(5))

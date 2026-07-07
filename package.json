@@ -1,0 +1,16 @@
+{
+  "name": "klang",
+  "version": "0.1.0",
+  "description": "A small Python-like language whose compiler pipeline is visible and audible.",
+  "type": "module",
+  "bin": {
+    "klang": "klang.js"
+  },
+  "scripts": {
+    "build": "node build-site.js",
+    "dev": "node dev-server.js",
+    "check": "node test.js",
+    "test": "node test.js"
+  },
+  "license": "MIT"
+}
