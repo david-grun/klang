@@ -34,6 +34,21 @@
   --water: #cdd2dc;
   --water-2: #b9bfcc;
 
+  /* theater proscenium + performers (light palette) */
+  --curtain: #e7c3d1;
+  --curtain-dark: #d9aabd;
+  --curtain-edge: #cf9db1;
+  --floor: #dcd2e0;
+  --floor-dark: #c9bdce;
+  --floor-edge: #b8aabf;
+  --skin: #f1c8ab;
+  --hair: #4f4560;
+  --piano: #4a4257;
+  --piano-key: #f6f2f4;
+  --perf-piano: #8a8ed0;
+  --perf-violin: #6fb0a4;
+  --perf-flute: #e58fb2;
+
   /* token colours */
   --c-keyword: #8a7ed0;
   --c-identifier: #4a9c89;
@@ -55,7 +70,7 @@
 
 * { box-sizing: border-box; }
 
-html, body { height: 100%; }
+html, body { min-height: 100%; }
 
 body {
   margin: 0;
@@ -67,6 +82,7 @@ body {
   color: var(--text-primary);
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -84,18 +100,39 @@ body {
 
 .scene {
   position: relative;
-  height: clamp(260px, 34vw, 360px);
+  height: clamp(340px, 44vw, 460px);
   overflow: hidden;
-  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 72%, var(--water) 72%);
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 60%, var(--water) 60%);
   image-rendering: pixelated;
 }
 
 .scene svg { image-rendering: pixelated; }
 
+/* proscenium: a light-palette valance + side curtains frame the painted
+   dawn backdrop, turning the whole scene into a little stage set. */
+.valance {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 24px;
+  z-index: 6;
+  background: repeating-linear-gradient(90deg, var(--curtain) 0 10px, var(--curtain-dark) 10px 20px);
+  border-bottom: 2px solid var(--curtain-edge);
+}
+.curtain {
+  position: absolute;
+  top: 0;
+  width: 70px;
+  height: 100%;
+  z-index: 6;
+  background: repeating-linear-gradient(90deg, var(--curtain) 0 11px, var(--curtain-dark) 11px 22px);
+}
+.curtain-left { left: 0; border-right: 2px solid var(--curtain-edge); }
+.curtain-right { right: 0; border-left: 2px solid var(--curtain-edge); }
+
 .sun {
   position: absolute;
-  left: 20%;
-  top: 26%;
+  left: 48%;
+  top: 24%;
   width: 46px;
   height: 46px;
   border-radius: 4px;
@@ -131,9 +168,9 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 20%;
+  bottom: 96px;
   width: 100%;
-  height: 52%;
+  height: 150px;
   display: block;
 }
 
@@ -145,9 +182,9 @@ body {
 
 .branch {
   position: absolute;
-  top: -6px;
+  top: 20px;
   right: -8px;
-  width: clamp(220px, 42%, 420px);
+  width: clamp(210px, 40%, 400px);
   height: auto;
 }
 
@@ -169,8 +206,8 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
-  height: 22%;
+  bottom: 56px;
+  height: 44px;
   background: linear-gradient(180deg, var(--water) 0%, var(--water-2) 100%);
   overflow: hidden;
 }
@@ -209,11 +246,11 @@ body {
 
 .scene-title {
   position: absolute;
-  left: 28px;
-  bottom: 26px;
-  z-index: 3;
-  max-width: 60%;
-  text-shadow: 0 1px 10px rgba(247, 245, 244, 0.85);
+  left: 88px;
+  top: 30px;
+  z-index: 7;
+  max-width: 46%;
+  text-shadow: 0 1px 10px rgba(247, 245, 244, 0.9);
 }
 .scene-kicker {
   font-size: 11px;
@@ -238,6 +275,102 @@ body {
   max-width: 320px;
   line-height: 1.5;
 }
+
+/* ----------------------------------------------------- theater stage */
+
+.stage-floor {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 56px;
+  z-index: 2;
+  background: linear-gradient(180deg, var(--floor) 0%, var(--floor-dark) 100%);
+  border-top: 2px solid var(--floor-edge);
+}
+
+.spotlight {
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 72%);
+  filter: blur(7px);
+  opacity: 0.35;
+  transition: opacity 0.4s;
+}
+.spotlight-left { left: 18%; transform: skewX(-9deg); }
+.spotlight-right { right: 18%; transform: skewX(9deg); }
+.scene.is-performing .spotlight { opacity: 0.7; }
+
+.orchestra {
+  position: absolute;
+  left: 0; right: 0; bottom: 8px;
+  height: 104px;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 44px;
+}
+
+.performer { position: relative; width: 56px; height: 96px; image-rendering: pixelated; }
+.performer .hair { position: absolute; width: 18px; height: 10px; background: var(--hair); border-radius: 3px 3px 0 0; }
+.performer .head { position: absolute; width: 16px; height: 16px; background: var(--skin); border-radius: 2px; animation: head-nod 2.8s ease-in-out infinite; }
+.performer .torso { position: absolute; border-radius: 4px 4px 0 0; }
+.performer .arm { position: absolute; background: var(--skin); border-radius: 2px; }
+
+/* pianist */
+.pianist { width: 88px; }
+.pianist .hair { left: 36px; top: 12px; }
+.pianist .head { left: 37px; top: 18px; }
+.pianist .torso { left: 31px; top: 32px; width: 28px; height: 40px; background: var(--perf-piano); }
+.pianist .piano {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 88px; height: 34px;
+  z-index: 2;
+  background: var(--piano);
+  border-radius: 3px 3px 2px 2px;
+}
+.pianist .piano-keys {
+  position: absolute;
+  left: 8px; bottom: 8px;
+  width: 72px; height: 10px;
+  background: var(--piano-key);
+  background-image: repeating-linear-gradient(90deg, transparent 0 6px, rgba(46, 41, 58, 0.7) 6px 8px);
+  border-radius: 1px;
+}
+.pianist .hand { position: absolute; width: 8px; height: 8px; background: var(--skin); border-radius: 2px; bottom: 20px; z-index: 3; }
+.pianist .hand-l { left: 22px; animation: hand-play-l 1.6s ease-in-out infinite; }
+.pianist .hand-r { left: 56px; animation: hand-play-r 1.6s ease-in-out infinite; }
+
+/* violinist */
+.violinist .hair { left: 19px; top: 8px; }
+.violinist .head { left: 20px; top: 14px; }
+.violinist .torso { left: 15px; top: 28px; width: 26px; height: 44px; background: var(--perf-violin); }
+.violinist .violin { position: absolute; left: 30px; top: 32px; width: 22px; height: 8px; background: #7a5a44; border-radius: 2px; transform: rotate(-18deg); }
+.violinist .bow { position: absolute; left: 26px; top: 28px; width: 30px; height: 3px; background: #efe9ee; transform-origin: left center; animation: bow-saw 1.5s ease-in-out infinite; }
+
+/* flutist */
+.flutist .hair { left: 19px; top: 8px; }
+.flutist .head { left: 20px; top: 14px; }
+.flutist .torso { left: 15px; top: 28px; width: 26px; height: 44px; background: var(--perf-flute); }
+.flutist .arm { left: 30px; top: 30px; width: 8px; height: 16px; }
+.flutist .flute { position: absolute; left: 30px; top: 30px; width: 32px; height: 4px; background: #d9d2dc; border-radius: 2px; transform-origin: left center; animation: flute-sway 3s ease-in-out infinite; }
+
+@keyframes hand-play-l { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+@keyframes hand-play-r { 0%, 100% { transform: translateY(4px); } 50% { transform: translateY(0); } }
+@keyframes bow-saw { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(9deg); } }
+@keyframes flute-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes head-nod { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.5px); } }
+
+/* play with feeling while a program runs */
+.scene.is-performing .pianist .hand-l,
+.scene.is-performing .pianist .hand-r { animation-duration: 0.5s; }
+.scene.is-performing .violinist .bow { animation-duration: 0.45s; }
+.scene.is-performing .flutist .flute { animation-duration: 1s; }
+.scene.is-performing .performer .head { animation-duration: 0.9s; }
 
 /* -------------------------------------------------------------- toolbar */
 
@@ -317,6 +450,24 @@ body {
   white-space: pre;
 }
 .code-wrap { position: relative; flex: 1; min-width: 0; }
+
+/* floating notes that pop above each token as the lexer reads it */
+.source-note-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 4; }
+.source-note {
+  position: absolute;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  transform: translate(-50%, 0);
+  text-shadow: 0 1px 2px rgba(247, 245, 244, 0.9);
+  animation: note-pop 950ms ease-out forwards;
+  will-change: transform, opacity;
+}
+@keyframes note-pop {
+  0% { opacity: 0; transform: translate(-50%, 8px) scale(0.6); }
+  22% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -28px) scale(1.05); }
+}
 .code-highlight, #sourceInput {
   margin: 0;
   padding: 14px;
@@ -463,7 +614,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sun, .cloud, .train, .blossom, .bird-perch, .water::before, .water::after, .petal {
+  .sun, .cloud, .train, .blossom, .bird-perch, .water::before, .water::after, .petal,
+  .performer .head, .pianist .hand, .violinist .bow, .flutist .flute, .source-note {
     animation: none !important;
   }
 }

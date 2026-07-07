@@ -10,7 +10,11 @@
     <main class="app">
 
       <!-- ---------------------------------------------------- scene -->
-      <section class="scene" aria-label="Pixel-art dawn cityscape">
+      <section class="scene stage" id="scene" aria-label="Pixel-art dawn theater">
+        <div class="valance" aria-hidden="true"></div>
+        <div class="curtain curtain-left" aria-hidden="true"></div>
+        <div class="curtain curtain-right" aria-hidden="true"></div>
+
         <div class="sun"></div>
         <div class="cloud cloud-a"></div>
         <div class="cloud cloud-b"></div>
@@ -122,6 +126,36 @@
         </svg>
 
         <div class="water"></div>
+
+        <!-- the little orchestra, on a lit stage floor -->
+        <div class="spotlight spotlight-left" aria-hidden="true"></div>
+        <div class="spotlight spotlight-right" aria-hidden="true"></div>
+        <div class="stage-floor" aria-hidden="true"></div>
+        <div class="orchestra" aria-hidden="true">
+          <div class="performer violinist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="violin"></div>
+            <div class="bow"></div>
+          </div>
+          <div class="performer pianist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="piano"><span class="piano-keys"></span></div>
+            <div class="hand hand-l"></div>
+            <div class="hand hand-r"></div>
+          </div>
+          <div class="performer flutist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="arm"></div>
+            <div class="flute"></div>
+          </div>
+        </div>
+
         <div class="petals" id="petals" aria-hidden="true"></div>
 
         <div class="scene-title">
@@ -161,6 +195,7 @@
               <pre class="code-highlight" id="codeHighlight" aria-hidden="true"></pre>
               <textarea id="sourceInput" spellcheck="false" autocomplete="off"
                         autocapitalize="off" aria-label="Klang source"></textarea>
+              <div class="source-note-layer" id="sourceNotes" aria-hidden="true"></div>
             </div>
           </div>
 

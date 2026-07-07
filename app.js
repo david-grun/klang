@@ -1,5 +1,5 @@
 import { run, STAGES } from "./src/pipeline.js";
-import { KEYWORDS, LITERAL_WORDS } from "./src/token.js";
+import { KEYWORDS, LITERAL_WORDS, tokenCategory } from "./src/token.js";
 import { KlangSound } from "./sound.js";
 
 // ---------------------------------------------------------------- samples
@@ -80,6 +80,8 @@ const STRUCTURAL = new Set(["EOF", "NEWLINE", "INDENT", "DEDENT"]);
 // ------------------------------------------------------------------- dom
 
 const els = {
+  scene: document.querySelector("#scene"),
+  sourceNotes: document.querySelector("#sourceNotes"),
   sampleSelect: document.querySelector("#sampleSelect"),
   soundToggle: document.querySelector("#soundToggle"),
   soundStatus: document.querySelector("#soundStatus"),
@@ -157,6 +159,59 @@ function syncScroll() {
   els.codeHighlight.scrollTop = els.sourceInput.scrollTop;
   els.codeHighlight.scrollLeft = els.sourceInput.scrollLeft;
   els.gutter.scrollTop = els.sourceInput.scrollTop;
+}
+
+// ----------------------------------------------------- token note pops
+
+const CATEGORY_COLOR = {
+  keyword: "#8a7ed0",
+  identifier: "#4a9c89",
+  operator: "#d5734f",
+  literal: "#d1608c",
+  structural: "#a49cb2",
+};
+const NOTE_GLYPHS = ["♪", "♫", "♩", "♬"];
+let measureCanvas = null;
+
+function measureCharWidth(style) {
+  if (!measureCanvas) measureCanvas = document.createElement("canvas");
+  const ctx = measureCanvas.getContext("2d");
+  ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  return ctx.measureText("0").width;
+}
+
+function tokenPosition(token) {
+  const ta = els.sourceInput;
+  const style = getComputedStyle(ta);
+  const fontSize = parseFloat(style.fontSize) || 13;
+  let lineHeight = parseFloat(style.lineHeight);
+  // some browsers report the unitless multiplier (e.g. 1.7) instead of px
+  if (!lineHeight || lineHeight < fontSize) lineHeight = fontSize * 1.7;
+  const padLeft = parseFloat(style.paddingLeft) || 0;
+  const padTop = parseFloat(style.paddingTop) || 0;
+  const charWidth = measureCharWidth(style);
+  const x = padLeft + (token.col - 1) * charWidth - ta.scrollLeft;
+  const y = padTop + (token.line - 1) * lineHeight - ta.scrollTop;
+  if (y < -4 || y > ta.clientHeight - 6) return null;
+  if (x < -8 || x > ta.clientWidth + 8) return null;
+  return { x, y };
+}
+
+function popSourceNote(token) {
+  const pos = tokenPosition(token);
+  if (!pos) return;
+  const note = document.createElement("span");
+  note.className = "source-note";
+  note.textContent = NOTE_GLYPHS[Math.floor(Math.random() * NOTE_GLYPHS.length)];
+  note.style.left = `${pos.x}px`;
+  note.style.top = `${pos.y - 6}px`;
+  note.style.color = CATEGORY_COLOR[tokenCategory(token.type)] || "var(--text-secondary)";
+  els.sourceNotes.append(note);
+  note.addEventListener("animationend", () => note.remove(), { once: true });
+}
+
+function clearSourceNotes() {
+  els.sourceNotes.replaceChildren();
 }
 
 // -------------------------------------------------------- pipeline list
@@ -311,10 +366,6 @@ function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function visibleTokenCount(result) {
-  return (result.tokens || []).filter((t) => !STRUCTURAL.has(t.type)).length;
-}
-
 async function playStage(index, result, isFail, seq) {
   const key = STAGES[index];
 
@@ -327,15 +378,19 @@ async function playStage(index, result, isFail, seq) {
   }
 
   if (key === "lexer") {
-    const pool = ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5"];
-    const count = Math.max(4, Math.min(pool.length, visibleTokenCount(result) || 6));
-    for (let k = 0; k < count; k++) {
+    // the lexer reads the source token by token: pop a note above each one.
+    const scale = ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5"];
+    const tokens = (result.tokens || []).filter((t) => !STRUCTURAL.has(t.type));
+    const n = tokens.length || 1;
+    const spacing = Math.max(40, Math.min(95, 2200 / n));
+    for (let k = 0; k < tokens.length; k++) {
       if (seq !== runSeq) return;
-      sound.triangle(pool[k]);
+      sound.triangle(scale[k % scale.length]);
       pushRoll(index);
-      await wait(95);
+      popSourceNote(tokens[k]);
+      await wait(spacing);
     }
-    await wait(120);
+    await wait(140);
   } else if (key === "parser") {
     for (const note of ["C3", "G3", "C4"]) {
       if (seq !== runSeq) return;
@@ -385,8 +440,10 @@ async function performRun() {
   });
 
   resetRoll();
+  clearSourceNotes();
   hideError();
   setConsole("", false);
+  els.scene.classList.add("is-performing");
 
   const failedIndex = result.failedStage ? STAGES.indexOf(result.failedStage) : -1;
   const lastIndex = failedIndex >= 0 ? failedIndex : STAGES.length - 1;
@@ -413,6 +470,7 @@ async function performRun() {
     sound.flourish();
   }
 
+  els.scene.classList.remove("is-performing");
   running = false;
   els.runButton.disabled = false;
 }
@@ -452,7 +510,9 @@ function resetRun() {
   running = false;
   activeIndex = -1;
   els.runButton.disabled = false;
+  els.scene.classList.remove("is-performing");
   resetRoll();
+  clearSourceNotes();
   hideError();
   renderPipeline(-1, -1);
   setConsole("Press Run to hear the pipeline.", true);
