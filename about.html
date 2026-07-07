@@ -4,12 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>About Klang</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
     <style>
       .about { padding: 26px clamp(18px, 5vw, 56px) 40px; }
       .about h2 {
-        margin: 34px 0 10px;
-        font-size: 19px;
+        margin: 38px 0 12px;
+        font-family: var(--font-pixel);
+        font-size: 13px;
+        line-height: 1.5;
         color: var(--text-primary);
       }
       .about h2:first-child { margin-top: 4px; }
@@ -25,7 +30,7 @@
         font-size: 12.5px;
         background: var(--panel-2);
         border: 1px solid var(--border);
-        border-radius: 5px;
+        border-radius: 3px;
         padding: 1px 5px;
         color: var(--text-primary);
       }
@@ -35,7 +40,7 @@
         line-height: 1.6;
         background: var(--panel-2);
         border: 1px solid var(--border);
-        border-radius: 10px;
+        border-radius: 4px;
         padding: 14px 16px;
         overflow-x: auto;
         max-width: 72ch;
@@ -49,7 +54,7 @@
         padding: 10px 12px;
         background: var(--panel-2);
         border: 1px solid var(--border);
-        border-radius: 10px;
+        border-radius: 4px;
         font-size: 13.5px;
       }
       .stage-card .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; align-self: center; }
@@ -68,7 +73,7 @@
         border-left: 3px solid var(--stage-semantic);
         padding: 10px 14px;
         background: var(--panel-2);
-        border-radius: 0 10px 10px 0;
+        border-radius: 0 4px 4px 0;
         max-width: 70ch;
       }
     </style>
@@ -105,11 +110,11 @@
 
         <h2>The five stages (and their instruments)</h2>
         <div class="stage-table">
-          <div class="stage-card"><span class="dot" style="background:#ec897b"></span><strong>Lexer</strong><span>splits source into tokens — triangle synth, one note per token</span></div>
-          <div class="stage-card"><span class="dot" style="background:#e58fb2"></span><strong>Parser</strong><span>builds the syntax tree — plucked string</span></div>
-          <div class="stage-card"><span class="dot" style="background:#6fb0a4"></span><strong>Scope</strong><span>resolves every name (LEGB) — soft pad chord</span></div>
-          <div class="stage-card"><span class="dot" style="background:#8a8ed0"></span><strong>Semantic</strong><span>type-checks before running — FM bell</span></div>
-          <div class="stage-card"><span class="dot" style="background:#5f5473"></span><strong>Execute</strong><span>runs the program — membrane drum, one hit per output line</span></div>
+          <div class="stage-card"><span class="dot" style="background:#f0907f"></span><strong>Lexer</strong><span>splits source into tokens — triangle synth, one note per token</span></div>
+          <div class="stage-card"><span class="dot" style="background:#ef9cbd"></span><strong>Parser</strong><span>builds the syntax tree — plucked string</span></div>
+          <div class="stage-card"><span class="dot" style="background:#7fc4b4"></span><strong>Scope</strong><span>resolves every name (LEGB) — soft pad chord</span></div>
+          <div class="stage-card"><span class="dot" style="background:#a49ae8"></span><strong>Semantic</strong><span>type-checks before running — FM bell</span></div>
+          <div class="stage-card"><span class="dot" style="background:#cfc4e6"></span><strong>Execute</strong><span>runs the program — membrane drum, one hit per output line</span></div>
         </div>
         <p>
           The pipeline stops at the first stage that reports an error, and the

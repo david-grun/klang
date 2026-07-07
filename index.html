@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Klang — a compiler you can hear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -15,12 +18,49 @@
         <div class="curtain curtain-left" aria-hidden="true"></div>
         <div class="curtain curtain-right" aria-hidden="true"></div>
 
-        <!-- back wall: a faint painted music staff -->
-        <div class="wall-staff" aria-hidden="true"></div>
-        <span class="wall-note" style="left: 16%; top: 47%;" aria-hidden="true">♪</span>
-        <span class="wall-note" style="left: 28%; top: 53%;" aria-hidden="true">♫</span>
-        <span class="wall-note" style="right: 26%; top: 49%;" aria-hidden="true">♩</span>
-        <span class="wall-note" style="right: 14%; top: 55%;" aria-hidden="true">♪</span>
+        <!-- back wall: arched hall windows and standing candelabras -->
+        <div class="wall-window" style="left: 24%;" aria-hidden="true"></div>
+        <div class="wall-window" style="right: 24%;" aria-hidden="true"></div>
+        <svg class="candelabra" style="left: 13%;" viewBox="0 0 44 110" shape-rendering="crispEdges" aria-hidden="true">
+          <g fill="#6f6190">
+            <rect x="20" y="30" width="4" height="70"/>
+            <rect x="12" y="100" width="20" height="4"/>
+            <rect x="4" y="34" width="36" height="4"/>
+            <rect x="4" y="22" width="4" height="12"/>
+            <rect x="36" y="22" width="4" height="12"/>
+            <rect x="20" y="18" width="4" height="12"/>
+          </g>
+          <g fill="#f2e3c0">
+            <rect x="3" y="14" width="6" height="8"/>
+            <rect x="35" y="14" width="6" height="8"/>
+            <rect x="19" y="10" width="6" height="8"/>
+          </g>
+          <g fill="#e8a34f">
+            <rect x="4" y="9" width="4" height="5"/>
+            <rect x="36" y="9" width="4" height="5"/>
+            <rect x="20" y="5" width="4" height="5"/>
+          </g>
+        </svg>
+        <svg class="candelabra" style="right: 13%;" viewBox="0 0 44 110" shape-rendering="crispEdges" aria-hidden="true">
+          <g fill="#6f6190">
+            <rect x="20" y="30" width="4" height="70"/>
+            <rect x="12" y="100" width="20" height="4"/>
+            <rect x="4" y="34" width="36" height="4"/>
+            <rect x="4" y="22" width="4" height="12"/>
+            <rect x="36" y="22" width="4" height="12"/>
+            <rect x="20" y="18" width="4" height="12"/>
+          </g>
+          <g fill="#f2e3c0">
+            <rect x="3" y="14" width="6" height="8"/>
+            <rect x="35" y="14" width="6" height="8"/>
+            <rect x="19" y="10" width="6" height="8"/>
+          </g>
+          <g fill="#e8a34f">
+            <rect x="4" y="9" width="4" height="5"/>
+            <rect x="36" y="9" width="4" height="5"/>
+            <rect x="20" y="5" width="4" height="5"/>
+          </g>
+        </svg>
 
         <div class="scene-title">
           <span class="scene-kicker">a compiler you can hear</span>
@@ -37,16 +77,18 @@
             <div class="hair"></div>
             <div class="head"></div>
             <div class="torso"></div>
+            <div class="legs"></div>
             <div class="violin"></div>
             <div class="bow"></div>
           </div>
-          <div class="performer pianist">
+          <div class="performer cellist">
             <div class="hair"></div>
             <div class="head"></div>
             <div class="torso"></div>
-            <div class="piano"><span class="piano-keys"></span></div>
-            <div class="hand hand-l"></div>
-            <div class="hand hand-r"></div>
+            <div class="skirt"></div>
+            <div class="cello-neck"></div>
+            <div class="cello-body"></div>
+            <div class="bow"></div>
           </div>
           <div class="performer conductor">
             <div class="hair"></div>
@@ -55,12 +97,13 @@
             <div class="baton-arm"></div>
             <div class="podium"></div>
           </div>
-          <div class="performer flutist">
+          <div class="performer hornist">
             <div class="hair"></div>
             <div class="head"></div>
             <div class="torso"></div>
+            <div class="legs"></div>
             <div class="arm"></div>
-            <div class="flute"></div>
+            <div class="horn"></div>
           </div>
         </div>
 

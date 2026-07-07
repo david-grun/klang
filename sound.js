@@ -103,36 +103,45 @@ export class KlangSound {
     osc.stop(when + 0.4);
   }
 
-  // parser: plucked string (Karplus-Strong)
-  pluck(note, velocity = 0.5) {
+  // parser: soft plucked string (Karplus-Strong, harp-like rather than twangy)
+  pluck(note, velocity = 0.3) {
     if (!this._ready()) return;
     const ctx = this.context;
     const when = ctx.currentTime + 0.005;
     const f = Math.max(freq(note), 55);
-    const dur = 0.7;
+    const dur = 0.9;
 
     const out = ctx.createGain();
-    out.gain.setValueAtTime(velocity, when);
+    out.gain.setValueAtTime(0.0001, when);
+    out.gain.exponentialRampToValueAtTime(velocity, when + 0.02);
     out.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-    out.connect(this.master);
+    // round off the remaining edge
+    const tone = ctx.createBiquadFilter();
+    tone.type = "lowpass";
+    tone.frequency.value = Math.min(1800, f * 4);
+    out.connect(tone).connect(this.master);
 
     const delay = ctx.createDelay(0.05);
     delay.delayTime.value = 1 / f;
     const damp = ctx.createBiquadFilter();
     damp.type = "lowpass";
-    damp.frequency.value = Math.min(4200, f * 6);
+    damp.frequency.value = Math.min(2200, f * 3.2);
     const fb = ctx.createGain();
-    fb.gain.setValueAtTime(0.94, when);
-    fb.gain.setTargetAtTime(0.0, when + dur * 0.5, 0.12);
+    fb.gain.setValueAtTime(0.9, when);
+    fb.gain.setTargetAtTime(0.0, when + dur * 0.45, 0.14);
 
     delay.connect(damp).connect(fb).connect(delay);
     delay.connect(out);
 
-    // excite the string with one period of noise
+    // excite the string with one period of pre-softened noise
     const len = Math.max(1, Math.floor(ctx.sampleRate / f));
     const buffer = ctx.createBuffer(1, len, ctx.sampleRate);
     const data = buffer.getChannelData(0);
-    for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    let prev = 0;
+    for (let i = 0; i < len; i++) {
+      prev = prev * 0.6 + (Math.random() * 2 - 1) * 0.4; // one-pole smoothing
+      data[i] = prev;
+    }
     const noise = ctx.createBufferSource();
     noise.buffer = buffer;
     noise.connect(delay);
@@ -215,12 +224,38 @@ export class KlangSound {
     osc.stop(when + 0.35);
   }
 
-  // dissonant cutoff when a stage fails
+  // out-of-tune cutoff when a stage fails: two voices a quarter-tone apart
+  // sag flat together, like an instrument slipping out of tune mid-phrase.
   glitch() {
     if (!this._ready()) return;
-    this.bell("C3", 0.1);
-    this.bell("C#3", 0.08);
-    this.membrane("C2", 0.14);
+    const ctx = this.context;
+    const when = ctx.currentTime + 0.005;
+    const dur = 0.85;
+    const base = freq("E4");
+
+    const bus = ctx.createGain();
+    bus.gain.setValueAtTime(0.0001, when);
+    bus.gain.exponentialRampToValueAtTime(0.11, when + 0.02);
+    bus.gain.setValueAtTime(0.11, when + dur * 0.45);
+    bus.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    const tone = ctx.createBiquadFilter();
+    tone.type = "lowpass";
+    tone.frequency.value = 2400;
+    bus.connect(tone).connect(this.master);
+
+    // ~55 cents apart, both bending down a whole step
+    for (const detune of [1, 1.032]) {
+      const osc = ctx.createOscillator();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(base * detune, when);
+      osc.frequency.exponentialRampToValueAtTime(base * detune * 0.86, when + dur);
+      osc.connect(bus);
+      osc.start(when);
+      osc.stop(when + dur + 0.05);
+    }
+
+    // a soft low thud as the orchestra stops
+    this.membrane("C2", 0.1);
   }
 
   // small bright cadence when a clean run finishes

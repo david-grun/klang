@@ -67,11 +67,11 @@ print(divide(0))
 
 // one instrument (and one hue) per pipeline stage
 const STAGE_META = {
-  lexer: { label: "Lexer", instrument: "triangle synth", color: "#ec897b" },
-  parser: { label: "Parser", instrument: "plucked string", color: "#e58fb2" },
-  scope: { label: "Scope", instrument: "soft pad", color: "#6fb0a4" },
-  semantic: { label: "Semantic", instrument: "bell · FM", color: "#8a8ed0" },
-  execute: { label: "Execute", instrument: "membrane drum", color: "#5f5473" },
+  lexer: { label: "Lexer", instrument: "triangle synth", color: "#f0907f" },
+  parser: { label: "Parser", instrument: "plucked string", color: "#ef9cbd" },
+  scope: { label: "Scope", instrument: "soft pad", color: "#7fc4b4" },
+  semantic: { label: "Semantic", instrument: "bell · FM", color: "#a49ae8" },
+  execute: { label: "Execute", instrument: "membrane drum", color: "#cfc4e6" },
 };
 const STAGE_COLORS = STAGES.map((key) => STAGE_META[key].color);
 
@@ -164,11 +164,11 @@ function syncScroll() {
 // ----------------------------------------------------- token note pops
 
 const CATEGORY_COLOR = {
-  keyword: "#8a7ed0",
-  identifier: "#4a9c89",
-  operator: "#d5734f",
-  literal: "#d1608c",
-  structural: "#a49cb2",
+  keyword: "#b3a7f2",
+  identifier: "#74c9b0",
+  operator: "#f29a72",
+  literal: "#f090b4",
+  structural: "#8d84a3",
 };
 const NOTE_GLYPHS = ["♪", "♫", "♩", "♬"];
 let measureCanvas = null;
@@ -306,10 +306,10 @@ function drawRoll() {
   for (let i = 0; i < STAGES.length; i++) {
     const y = i * laneH;
     if (i % 2 === 0) {
-      rollCtx.fillStyle = "rgba(59,52,72,0.03)";
+      rollCtx.fillStyle = "rgba(255,255,255,0.035)";
       rollCtx.fillRect(0, y, w, laneH);
     }
-    rollCtx.strokeStyle = "rgba(59,52,72,0.07)";
+    rollCtx.strokeStyle = "rgba(255,255,255,0.08)";
     rollCtx.beginPath();
     rollCtx.moveTo(0, y);
     rollCtx.lineTo(w, y);
@@ -373,7 +373,7 @@ async function playStage(index, result, isFail, seq) {
     pushRoll(index);
     pushRoll(index);
     sound.glitch();
-    await wait(520);
+    await wait(900);
     return;
   }
 
@@ -478,7 +478,7 @@ async function performRun() {
 
 // ---------------------------------------------------- rising stage notes
 
-const SCENE_NOTE_COLORS = ["#8a8ed0", "#6fb0a4", "#e58fb2", "#ec897b", "#a49cb2"];
+const SCENE_NOTE_COLORS = ["#a49ae8", "#7fc4b4", "#ef9cbd", "#f0907f", "#cfc4e6"];
 
 function spawnSceneNote() {
   if (reduceMotion || document.hidden) return;

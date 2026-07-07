@@ -3,58 +3,62 @@
    cherry-blossom pink, blue-gray skyline, plum branch, teal bird. */
 
 :root {
-  --bg: #e7e4ea;
-  --panel: #f7f5f4;
-  --panel-2: #efecf0;
-  --panel-3: #e8e4ea;
-  --border: #ddd7e0;
-  --border-strong: #cbc3d2;
-  --text-primary: #3b3448;
-  --text-secondary: #6f687d;
-  --text-muted: #a49cb2;
+  --bg: #2e2739;
+  --panel: #3c3450;
+  --panel-2: #362f48;
+  --panel-3: #453c5c;
+  --border: #4c4363;
+  --border-strong: #5d5378;
+  --text-primary: #eee9f4;
+  --text-secondary: #b9b0cc;
+  --text-muted: #8b819f;
 
-  --danger-bg: #f8e6e9;
-  --danger-border: #e9bcc4;
-  --danger-text: #b24a5c;
-  --success-text: #3e8a6a;
+  --danger-bg: #46242e;
+  --danger-border: #7c3a47;
+  --danger-text: #f2a8b2;
+  --success-text: #7fd0a8;
 
   /* theater back wall */
-  --wall-top: #e6e1ea;
-  --wall-bottom: #d5cede;
-  --staff-line: #b7abc2;
+  --wall-top: #5b4d73;
+  --wall-bottom: #493e5e;
+  --wall-decor: #6f6190;
 
-  /* theater proscenium + performers (light palette) */
-  --curtain: #e7c3d1;
-  --curtain-dark: #d9aabd;
-  --curtain-edge: #cf9db1;
-  --floor: #dcd2e0;
-  --floor-dark: #c9bdce;
-  --floor-edge: #b8aabf;
+  /* theater proscenium + performers */
+  --curtain: #a83a42;
+  --curtain-dark: #8c2b34;
+  --curtain-edge: #6e2029;
+  --tieback: #d9a441;
+  --floor: #362d49;
+  --floor-dark: #2b2439;
+  --floor-edge: #4d4268;
   --skin: #f1c8ab;
+  --skin-2: #9c6a44;
+  --wig: #f2eef6;
   --hair: #4f4560;
-  --piano: #4a4257;
-  --piano-key: #f6f2f4;
-  --perf-piano: #8a8ed0;
-  --perf-violin: #6fb0a4;
-  --perf-flute: #e58fb2;
+  --coat: #332d4d;
+  --coat-2: #3d3560;
+  --stocking: #e9e4ee;
+  --gold: #d9a441;
+  --cello: #8a5a35;
+  --cello-dark: #6f4628;
 
-  /* token colours */
-  --c-keyword: #8a7ed0;
-  --c-identifier: #4a9c89;
-  --c-operator: #d5734f;
-  --c-literal: #d1608c;
-  --c-comment: #a89fb6;
+  /* token colours (bright, for the dark editor) */
+  --c-keyword: #b3a7f2;
+  --c-identifier: #74c9b0;
+  --c-operator: #f29a72;
+  --c-literal: #f090b4;
+  --c-comment: #8d84a3;
 
-  /* one hue per pipeline stage, pulled from the scene */
-  --stage-lexer: #ec897b;
-  --stage-parser: #e58fb2;
-  --stage-scope: #6fb0a4;
-  --stage-semantic: #8a8ed0;
-  --stage-execute: #5f5473;
+  /* one hue per pipeline stage */
+  --stage-lexer: #f0907f;
+  --stage-parser: #ef9cbd;
+  --stage-scope: #7fc4b4;
+  --stage-semantic: #a49ae8;
+  --stage-execute: #cfc4e6;
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
-  --font-pixel: "Segoe UI", "Trebuchet MS", var(--font-sans);
+  --font-pixel: "Press Start 2P", "Courier New", monospace;
 }
 
 * { box-sizing: border-box; }
@@ -65,7 +69,7 @@ body {
   margin: 0;
   padding: 28px 16px 48px;
   background:
-    radial-gradient(1200px 400px at 50% -140px, #efe7ec 0%, var(--bg) 60%),
+    radial-gradient(1200px 400px at 50% -140px, #3a3150 0%, var(--bg) 60%),
     var(--bg);
   font-family: var(--font-sans);
   color: var(--text-primary);
@@ -79,10 +83,10 @@ body {
   width: 100%;
   max-width: 1000px;
   background: var(--panel);
-  border: 1px solid var(--border-strong);
-  border-radius: 18px;
+  border: 2px solid var(--border-strong);
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 24px 60px -30px rgba(59, 52, 72, 0.45);
+  box-shadow: 0 24px 60px -30px rgba(10, 6, 18, 0.8);
 }
 
 /* ---------------------------------------------------------------- scene */
@@ -92,34 +96,28 @@ body {
   height: clamp(320px, 40vw, 420px);
   overflow: hidden;
   background:
-    radial-gradient(620px 320px at 50% 100%, rgba(246, 179, 163, 0.30) 0%, rgba(246, 179, 163, 0) 64%),
+    radial-gradient(680px 340px at 50% 100%, rgba(158, 138, 200, 0.26) 0%, rgba(158, 138, 200, 0) 66%),
     linear-gradient(180deg, var(--wall-top) 0%, var(--wall-bottom) 100%);
   image-rendering: pixelated;
 }
 
-/* a faint five-line music staff painted across the back wall */
-.wall-staff {
+/* arched hall windows on the back wall */
+.wall-window {
   position: absolute;
-  left: 10%;
-  right: 10%;
-  top: 48%;
-  height: 58px;
-  z-index: 1;
-  background: repeating-linear-gradient(
-    180deg,
-    var(--staff-line) 0 2px,
-    transparent 2px 14px
-  );
-  opacity: 0.45;
+  top: 18%;
+  width: 58px;
+  height: 140px;
+  z-index: 0;
+  background-color: var(--wall-decor);
+  background-image:
+    linear-gradient(90deg, transparent 0 26px, var(--wall-bottom) 26px 30px, transparent 30px),
+    repeating-linear-gradient(180deg, transparent 0 26px, var(--wall-bottom) 26px 30px);
+  border-radius: 29px 29px 0 0;
+  opacity: 0.55;
 }
-.wall-note {
-  position: absolute;
-  z-index: 1;
-  font-size: 22px;
-  color: var(--staff-line);
-  opacity: 0.8;
-  text-shadow: none;
-}
+
+/* standing candelabras flanking the orchestra */
+.candelabra { position: absolute; bottom: 96px; width: 44px; height: 110px; z-index: 1; opacity: 0.9; }
 
 /* proscenium: a light-palette valance + side curtains frame the stage. */
 .valance {
@@ -149,16 +147,16 @@ body {
 }
 .curtain-left { left: 0; border-right: 3px solid var(--curtain-edge); }
 .curtain-right { right: 0; border-left: 3px solid var(--curtain-edge); }
-/* tieback band */
+/* gold tieback band */
 .curtain::after {
   content: "";
   position: absolute;
   top: 58%;
   width: 100%;
   height: 14px;
-  background: var(--curtain-edge);
-  border-top: 2px solid #b5849b;
-  border-bottom: 2px solid #b5849b;
+  background: var(--tieback);
+  border-top: 2px solid #b3822e;
+  border-bottom: 2px solid #b3822e;
 }
 
 /* music notes drifting up from the orchestra pit */
@@ -186,23 +184,23 @@ body {
   width: max-content;
   max-width: 62%;
   text-align: center;
-  text-shadow: 0 1px 10px rgba(247, 245, 244, 0.9);
+  text-shadow: 0 2px 10px rgba(18, 12, 30, 0.6);
 }
 .scene-kicker {
-  font-size: 11px;
-  letter-spacing: 0.18em;
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  font-weight: 600;
 }
 .scene-title h1 {
-  margin: 4px 0 4px;
+  margin: 12px 0 10px;
   font-family: var(--font-pixel);
-  font-size: clamp(38px, 7vw, 58px);
-  font-weight: 800;
+  font-size: clamp(26px, 4.6vw, 40px);
+  font-weight: 400;
   letter-spacing: 0.02em;
-  color: var(--branch);
-  line-height: 0.95;
+  color: var(--wig);
+  line-height: 1.1;
 }
 .scene-title p {
   margin: 0 auto;
@@ -220,7 +218,7 @@ body {
   height: 64px;
   z-index: 2;
   background:
-    repeating-linear-gradient(90deg, rgba(184, 170, 191, 0.22) 0 2px, transparent 2px 42px),
+    repeating-linear-gradient(90deg, rgba(120, 104, 150, 0.28) 0 2px, transparent 2px 42px),
     linear-gradient(180deg, var(--floor) 0%, var(--floor-dark) 100%);
   border-top: 3px solid var(--floor-edge);
 }
@@ -228,18 +226,18 @@ body {
 .spotlight {
   position: absolute;
   top: 0;
-  width: 200px;
+  width: clamp(200px, 30%, 340px);
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 72%);
-  filter: blur(7px);
-  opacity: 0.35;
+  background: linear-gradient(180deg, rgba(226, 214, 244, 0.20) 0%, rgba(226, 214, 244, 0.07) 74%, rgba(226, 214, 244, 0) 100%);
+  clip-path: polygon(44% 0, 56% 0, 100% 100%, 0% 100%);
+  opacity: 0.7;
   transition: opacity 0.4s;
 }
-.spotlight-left { left: 18%; transform: skewX(-9deg); }
-.spotlight-right { right: 18%; transform: skewX(9deg); }
-.scene.is-performing .spotlight { opacity: 0.7; }
+.spotlight-left { left: 10%; transform: skewX(-6deg); }
+.spotlight-right { right: 10%; transform: skewX(6deg); }
+.scene.is-performing .spotlight { opacity: 1; }
 
 .orchestra {
   position: absolute;
@@ -260,55 +258,96 @@ body {
   transform: scale(1.25);
   transform-origin: bottom center;
 }
-.performer .hair { position: absolute; width: 18px; height: 10px; background: var(--hair); border-radius: 3px 3px 0 0; }
+/* powdered wig: crown block plus two side rolls */
+.performer .hair { position: absolute; width: 18px; height: 9px; background: var(--wig); border-radius: 3px 3px 0 0; z-index: 2; }
+.performer .hair::before, .performer .hair::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  width: 5px;
+  height: 9px;
+  background: var(--wig);
+  border-radius: 2px;
+}
+.performer .hair::before { left: -4px; }
+.performer .hair::after { right: -4px; }
 .performer .head { position: absolute; width: 16px; height: 16px; background: var(--skin); border-radius: 2px; animation: head-nod 2.8s ease-in-out infinite; }
 .performer .torso { position: absolute; border-radius: 4px 4px 0 0; }
 .performer .arm { position: absolute; background: var(--skin); border-radius: 2px; }
+/* white stockings */
+.performer .legs { position: absolute; bottom: 0; width: 22px; height: 13px; }
+.performer .legs::before, .performer .legs::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 6px;
+  height: 13px;
+  background: var(--stocking);
+  border-bottom: 4px solid #221d30; /* buckle shoes */
+}
+.performer .legs::before { left: 2px; }
+.performer .legs::after { right: 2px; }
 
-/* pianist */
-.pianist { width: 88px; }
-.pianist .hair { left: 36px; top: 12px; }
-.pianist .head { left: 37px; top: 18px; }
-.pianist .torso { left: 31px; top: 32px; width: 28px; height: 40px; background: var(--perf-piano); }
-.pianist .piano {
+/* cellist, seated center like the reference */
+.cellist { width: 66px; }
+.cellist .hair { left: 25px; top: 4px; }
+.cellist .head { left: 26px; top: 10px; }
+.cellist .torso { left: 21px; top: 24px; width: 26px; height: 30px; background: var(--stocking); } /* white blouse */
+.cellist .skirt { position: absolute; left: 17px; top: 52px; width: 34px; height: 44px; background: var(--coat); border-radius: 4px 4px 0 0; }
+.cellist .cello-neck { position: absolute; left: 32px; top: 6px; width: 4px; height: 36px; background: var(--cello-dark); z-index: 3; }
+.cellist .cello-neck::before { content: ""; position: absolute; left: -2px; top: -5px; width: 8px; height: 6px; background: var(--cello-dark); border-radius: 2px; } /* scroll */
+.cellist .cello-body {
   position: absolute;
-  left: 0; bottom: 0;
-  width: 88px; height: 34px;
-  z-index: 2;
-  background: var(--piano);
-  border-radius: 3px 3px 2px 2px;
+  left: 19px; top: 38px;
+  width: 30px; height: 48px;
+  z-index: 3;
+  background: var(--cello);
+  border-radius: 46% 46% 44% 44%;
 }
-.pianist .piano-keys {
+.cellist .cello-body::before { content: ""; position: absolute; left: 13px; top: 3px; width: 3px; height: 42px; background: #2a2339; } /* strings */
+.cellist .cello-body::after { content: ""; position: absolute; left: 12px; bottom: -9px; width: 4px; height: 9px; background: #2a2339; } /* endpin */
+.cellist .bow {
   position: absolute;
-  left: 8px; bottom: 8px;
-  width: 72px; height: 10px;
-  background: var(--piano-key);
-  background-image: repeating-linear-gradient(90deg, transparent 0 6px, rgba(46, 41, 58, 0.7) 6px 8px);
-  border-radius: 1px;
+  left: 4px; top: 58px;
+  width: 40px; height: 3px;
+  z-index: 4;
+  background: #efe9ee;
+  transform-origin: left center;
+  animation: bow-saw 1.6s ease-in-out infinite;
 }
-.pianist .hand { position: absolute; width: 8px; height: 8px; background: var(--skin); border-radius: 2px; bottom: 20px; z-index: 3; }
-.pianist .hand-l { left: 22px; animation: hand-play-l 1.6s ease-in-out infinite; }
-.pianist .hand-r { left: 56px; animation: hand-play-r 1.6s ease-in-out infinite; }
 
 /* violinist */
 .violinist .hair { left: 19px; top: 8px; }
 .violinist .head { left: 20px; top: 14px; }
-.violinist .torso { left: 15px; top: 28px; width: 26px; height: 66px; background: var(--perf-violin); }
-.violinist .violin { position: absolute; left: 30px; top: 32px; width: 22px; height: 8px; background: #7a5a44; border-radius: 2px; transform: rotate(-18deg); }
+.violinist .torso { left: 15px; top: 28px; width: 26px; height: 56px; background: var(--coat); }
+.violinist .torso::before { content: ""; position: absolute; top: 1px; left: 10px; width: 6px; height: 5px; background: #c23540; } /* red bow tie */
+.violinist .legs { left: 17px; }
+.violinist .violin { position: absolute; left: 30px; top: 32px; width: 22px; height: 8px; background: var(--cello); border-radius: 2px; transform: rotate(-18deg); }
 .violinist .bow { position: absolute; left: 26px; top: 28px; width: 30px; height: 3px; background: #efe9ee; transform-origin: left center; animation: bow-saw 1.5s ease-in-out infinite; }
 
-/* flutist */
-.flutist .hair { left: 19px; top: 8px; }
-.flutist .head { left: 20px; top: 14px; }
-.flutist .torso { left: 15px; top: 28px; width: 26px; height: 66px; background: var(--perf-flute); }
-.flutist .arm { left: 30px; top: 30px; width: 8px; height: 16px; }
-.flutist .flute { position: absolute; left: 30px; top: 30px; width: 32px; height: 4px; background: #d9d2dc; border-radius: 2px; transform-origin: left center; animation: flute-sway 3s ease-in-out infinite; }
+/* hornist with a gold horn, like the reference */
+.hornist .hair { left: 19px; top: 8px; }
+.hornist .head { left: 20px; top: 14px; }
+.hornist .torso { left: 15px; top: 28px; width: 26px; height: 56px; background: var(--coat-2); }
+.hornist .legs { left: 17px; }
+.hornist .arm { left: 30px; top: 28px; width: 8px; height: 14px; }
+.hornist .horn {
+  position: absolute;
+  left: 30px; top: 20px;
+  width: 34px; height: 5px;
+  background: var(--gold);
+  border-radius: 2px;
+  transform: rotate(-14deg);
+  transform-origin: left center;
+  animation: horn-lift 3s ease-in-out infinite;
+}
+.hornist .horn::after { content: ""; position: absolute; right: -3px; top: -3px; width: 8px; height: 11px; background: var(--gold); border-radius: 2px; } /* bell */
 
 /* conductor, front and center on a podium */
 .conductor { width: 48px; z-index: 4; }
 .conductor .hair { left: 15px; top: 2px; }
 .conductor .head { left: 16px; top: 8px; }
-.conductor .torso { left: 11px; top: 22px; width: 26px; height: 66px; background: var(--hair); }
+.conductor .torso { left: 11px; top: 22px; width: 26px; height: 66px; background: var(--coat); }
 .conductor .podium { position: absolute; left: 2px; bottom: -4px; width: 44px; height: 10px; background: var(--floor-edge); border-radius: 2px; }
 .conductor .baton-arm {
   position: absolute;
@@ -332,17 +371,14 @@ body {
 }
 .scene.is-performing .conductor .baton-arm { animation-duration: 0.5s; }
 
-@keyframes hand-play-l { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
-@keyframes hand-play-r { 0%, 100% { transform: translateY(4px); } 50% { transform: translateY(0); } }
 @keyframes bow-saw { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(9deg); } }
-@keyframes flute-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes horn-lift { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(-8deg); } }
 @keyframes head-nod { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.5px); } }
 
 /* play with feeling while a program runs */
-.scene.is-performing .pianist .hand-l,
-.scene.is-performing .pianist .hand-r { animation-duration: 0.5s; }
-.scene.is-performing .violinist .bow { animation-duration: 0.45s; }
-.scene.is-performing .flutist .flute { animation-duration: 1s; }
+.scene.is-performing .violinist .bow,
+.scene.is-performing .cellist .bow { animation-duration: 0.45s; }
+.scene.is-performing .hornist .horn { animation-duration: 1s; }
 .scene.is-performing .performer .head { animation-duration: 0.9s; }
 
 /* -------------------------------------------------------------- toolbar */
@@ -359,47 +395,56 @@ body {
 }
 .brand { display: flex; align-items: center; gap: 10px; }
 .brand-mark {
-  width: 26px; height: 26px;
-  border-radius: 7px;
+  width: 28px; height: 28px;
+  border-radius: 4px;
   background: var(--stage-semantic);
   color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 14px;
+  font-family: var(--font-pixel); font-size: 12px;
 }
-.brand-name { font-size: 15px; font-weight: 700; }
+.brand-name { font-family: var(--font-pixel); font-size: 12px; }
 .brand-file { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
 
 .toolbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-.sample-picker { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+.sample-picker { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); }
+.sample-picker > span { font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; }
 .sample-picker select {
   font-family: var(--font-sans);
   font-size: 13px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 1px solid var(--border-strong);
-  background: #fff;
+  padding: 7px 8px;
+  border-radius: 4px;
+  border: 2px solid var(--border-strong);
+  background: var(--panel-3);
   color: var(--text-primary);
   cursor: pointer;
 }
-.sound-toggle { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); cursor: pointer; }
+.sound-toggle { display: flex; align-items: center; gap: 7px; color: var(--text-secondary); cursor: pointer; }
+.sound-toggle span { font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; }
 .sound-toggle input { accent-color: var(--stage-semantic); }
 
 .btn {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  padding: 7px 13px;
-  border-radius: 8px;
-  border: 1px solid var(--border-strong);
-  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  line-height: 1;
+  padding: 11px 16px;
+  border-radius: 4px;
+  border: 2px solid var(--border-strong);
+  background: var(--panel-3);
   color: var(--text-primary);
+  text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition: background 0.15s, opacity 0.15s, transform 0.08s;
 }
-.btn:hover { background: var(--panel-2); }
+.btn:hover { background: var(--border); }
+.btn:active { transform: translateY(1px); }
 .btn:disabled { opacity: 0.5; cursor: default; }
-.btn.primary { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
-.btn.primary:hover:not(:disabled) { opacity: 0.9; background: var(--text-primary); }
+.btn.primary { background: var(--curtain); color: #fff; border-color: var(--curtain-dark); }
+.btn.primary:hover:not(:disabled) { opacity: 0.92; background: var(--curtain); }
 
 /* --------------------------------------------------------------- layout */
 
@@ -432,7 +477,7 @@ body {
   font-weight: 700;
   line-height: 1;
   transform: translate(-50%, 0);
-  text-shadow: 0 1px 2px rgba(247, 245, 244, 0.9);
+  text-shadow: 0 1px 3px rgba(18, 12, 30, 0.85);
   animation: note-pop 2100ms ease-out forwards;
   will-change: transform, opacity;
 }
@@ -471,7 +516,7 @@ body {
   caret-color: var(--text-primary);
   outline: none;
 }
-#sourceInput::selection { background: rgba(138, 126, 208, 0.25); }
+#sourceInput::selection { background: rgba(179, 167, 242, 0.3); }
 
 .tok-keyword { color: var(--c-keyword); }
 .tok-identifier { color: var(--c-identifier); }
@@ -499,14 +544,21 @@ body {
 /* ------------------------------------------------------------- sections */
 
 .section { padding: 14px; border-top: 1px solid var(--border); }
-.section-label { margin: 0 0 10px; font-size: 12px; color: var(--text-muted); }
+.section-label {
+  margin: 0 0 10px;
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
 
 .roll-wrap {
   position: relative;
   height: 178px;
   background: var(--panel-2);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 4px;
   overflow: hidden;
 }
 .roll-wrap canvas { width: 100%; height: 100%; display: block; }
@@ -537,11 +589,11 @@ body {
   gap: 8px;
   font-size: 13px;
   padding: 6px 8px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid transparent;
   transition: background 0.15s, border-color 0.15s;
 }
-.pipe-row.active { background: #fff; border-color: var(--border-strong); }
+.pipe-row.active { background: rgba(255, 255, 255, 0.07); border-color: var(--border-strong); }
 .pipe-icon { width: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
 .pipe-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .pipe-label { flex: 1; }
@@ -588,7 +640,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scene-note, .performer .head, .pianist .hand, .violinist .bow, .flutist .flute,
+  .scene-note, .performer .head, .violinist .bow, .cellist .bow, .hornist .horn,
   .conductor .baton-arm, .source-note {
     animation: none !important;
   }

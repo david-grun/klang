@@ -9,10 +9,11 @@ JavaScript ES modules. The core compiler/interpreter pipeline is present:
 lexer, parser, resolver, semantic checker, and interpreter. The code is in the
 intended `src/` layout, with language design notes in `docs/`.
 
-The showcase uses a pixel-art theater theme in a light pastel palette: striped
-curtains and a scalloped valance frame a stage with a painted music staff on
-the back wall, spotlights, and a little orchestra (violinist, pianist,
-conductor with baton, flutist) that plays harder while a program runs. Music
+The showcase uses a pixel-art theater theme in a dark plum palette (deep
+purple hall, red curtains with gold tiebacks): the stage has arched windows
+and candelabras on the back wall, spotlight beams, and a little classical
+orchestra in powdered wigs and tailcoats (violinist, cellist, conductor with
+baton, hornist) that plays harder while a program runs. Music
 notes drift up from the pit; during the lexer stage a note also pops above
 each token in the editor. The audio concept is "one instrument per pipeline
 stage": each stage joins in as it activates so a clean run builds up like a
