@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About Klang</title>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+      .about { padding: 26px clamp(18px, 5vw, 56px) 40px; }
+      .about h2 {
+        margin: 34px 0 10px;
+        font-size: 19px;
+        color: var(--text-primary);
+      }
+      .about h2:first-child { margin-top: 4px; }
+      .about p, .about li {
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--text-secondary);
+        max-width: 70ch;
+      }
+      .about ul, .about ol { padding-left: 22px; }
+      .about code {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        padding: 1px 5px;
+        color: var(--text-primary);
+      }
+      .about pre {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.6;
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        max-width: 72ch;
+      }
+      .about pre code { background: none; border: 0; padding: 0; }
+      .stage-table { display: grid; gap: 8px; max-width: 560px; margin: 12px 0; }
+      .stage-card {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        padding: 10px 12px;
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 13.5px;
+      }
+      .stage-card .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; align-self: center; }
+      .stage-card strong { min-width: 76px; color: var(--text-primary); }
+      .stage-card span { color: var(--text-secondary); }
+      .about-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px clamp(18px, 5vw, 56px);
+        border-bottom: 1px solid var(--border);
+        background: var(--panel-2);
+      }
+      .honest {
+        border-left: 3px solid var(--stage-semantic);
+        padding: 10px 14px;
+        background: var(--panel-2);
+        border-radius: 0 10px 10px 0;
+        max-width: 70ch;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <div class="about-head">
+        <div class="brand">
+          <span class="brand-mark">K</span>
+          <span class="brand-name">About Klang</span>
+        </div>
+        <a class="btn" href="./index.html">← Back to the stage</a>
+      </div>
+
+      <div class="about">
+        <h2>What is Klang?</h2>
+        <p>
+          Klang is a small programming language whose compiler pipeline you can
+          <em>watch and hear</em>. Every time you press Run, your program passes
+          through five real compilation stages, and each stage performs with its
+          own instrument — a clean program builds up like a short symphony, and
+          an error stops the orchestra mid-phrase at exactly the stage that failed.
+        </p>
+        <p class="honest">
+          <strong>Is it a real, new language?</strong> Yes — Klang is implemented
+          entirely from scratch: its own lexer, recursive-descent parser, scope
+          resolver, semantic checker, and tree-walking interpreter, written in
+          dependency-free JavaScript (see <code>src/</code>). No Python runs
+          anywhere. Its <em>surface syntax</em> is deliberately Python-like so
+          programs are instantly readable, but the grammar, token set, scoping
+          rules, and gradual type system are Klang's own, specified in
+          <code>docs/LANGUAGE_DESIGN.md</code>.
+        </p>
+
+        <h2>The five stages (and their instruments)</h2>
+        <div class="stage-table">
+          <div class="stage-card"><span class="dot" style="background:#ec897b"></span><strong>Lexer</strong><span>splits source into tokens — triangle synth, one note per token</span></div>
+          <div class="stage-card"><span class="dot" style="background:#e58fb2"></span><strong>Parser</strong><span>builds the syntax tree — plucked string</span></div>
+          <div class="stage-card"><span class="dot" style="background:#6fb0a4"></span><strong>Scope</strong><span>resolves every name (LEGB) — soft pad chord</span></div>
+          <div class="stage-card"><span class="dot" style="background:#8a8ed0"></span><strong>Semantic</strong><span>type-checks before running — FM bell</span></div>
+          <div class="stage-card"><span class="dot" style="background:#5f5473"></span><strong>Execute</strong><span>runs the program — membrane drum, one hit per output line</span></div>
+        </div>
+        <p>
+          The pipeline stops at the first stage that reports an error, and the
+          instruments for the stages after it never play. Try the
+          <em>Semantic error</em> example: the lexer, parser, and scope stages
+          perform, the bell strikes a sour note, and Execute stays silent.
+        </p>
+
+        <h2>How to use the site</h2>
+        <ol>
+          <li>Pick an example from the <strong>Example</strong> menu, or type your own program in the editor.</li>
+          <li>Press <strong>▶ Run</strong>. Notes pop above each token as the lexer reads it, the Symphony roll shows every stage's notes in its own lane, and the pipeline list on the right checks off stages as they pass.</li>
+          <li>Output appears in the <strong>Console</strong>; errors appear in a banner naming the stage, line, and reason.</li>
+          <li>Use the <strong>Sound</strong> checkbox to mute, and <strong>Reset</strong> to restore the example.</li>
+        </ol>
+
+        <h2>A taste of the language</h2>
+        <pre><code># functions, closures, recursion
+def countdown(n):
+    if n == 0:
+        print("liftoff")
+        return
+    print(n)
+    countdown(n - 1)
+
+countdown(3)
+
+# classes and methods
+class Counter:
+    def __init__(self, start):
+        self._n = start
+    def bump(self):
+        self._n = self._n + 1
+
+c = Counter(10)
+c.bump()
+print(c._n)   # 11</code></pre>
+        <ul>
+          <li><strong>Types:</strong> <code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, <code>None</code>; explicit conversions via <code>int()</code>, <code>str()</code>, …</li>
+          <li><strong>Control flow:</strong> <code>if / elif / else</code>, <code>while</code>, <code>for … in range(...)</code> (or over a string), <code>break</code>, <code>continue</code>.</li>
+          <li><strong>Scope:</strong> lexical LEGB with closures; <code>global</code> writes to module scope; undeclared names are caught <em>before</em> the program runs.</li>
+          <li><strong>Checking:</strong> gradual — definite type errors like <code>"a" + True</code> are rejected by the semantic stage; the rest is enforced at runtime with the same messages.</li>
+        </ul>
+
+        <h2>Running Klang from the command line</h2>
+        <pre><code>node klang.js examples/hello.klang      # run a program
+node klang.js --stages examples/errors/undeclared.klang
+node klang.js --tokens examples/hello.klang
+node test.js                            # 32 language tests</code></pre>
+      </div>
+
+      <footer class="site-foot">
+        <span>Klang · a tiny language whose compiler performs on stage</span>
+        <span>
+          <a href="./index.html">Home</a> ·
+          <a href="https://github.com/david-grun/klang" target="_blank" rel="noopener">GitHub ↗</a>
+        </span>
+      </footer>
+    </main>
+  </body>
+</html>

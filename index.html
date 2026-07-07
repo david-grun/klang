@@ -9,123 +9,24 @@
   <body>
     <main class="app">
 
-      <!-- ---------------------------------------------------- scene -->
-      <section class="scene stage" id="scene" aria-label="Pixel-art dawn theater">
+      <!-- ------------------------------------------------ theater -->
+      <section class="scene" id="scene" aria-label="Pixel-art orchestra stage">
         <div class="valance" aria-hidden="true"></div>
         <div class="curtain curtain-left" aria-hidden="true"></div>
         <div class="curtain curtain-right" aria-hidden="true"></div>
 
-        <div class="sun"></div>
-        <div class="cloud cloud-a"></div>
-        <div class="cloud cloud-b"></div>
+        <!-- back wall: a faint painted music staff -->
+        <div class="wall-staff" aria-hidden="true"></div>
+        <span class="wall-note" style="left: 16%; top: 47%;" aria-hidden="true">♪</span>
+        <span class="wall-note" style="left: 28%; top: 53%;" aria-hidden="true">♫</span>
+        <span class="wall-note" style="right: 26%; top: 49%;" aria-hidden="true">♩</span>
+        <span class="wall-note" style="right: 14%; top: 55%;" aria-hidden="true">♪</span>
 
-        <!-- distant city, bridge and passing train, reflected in water -->
-        <svg class="skyline" viewBox="0 0 1200 240" preserveAspectRatio="xMidYMax slice"
-             shape-rendering="crispEdges" aria-hidden="true">
-          <!-- far layer -->
-          <g fill="#cfd2dc">
-            <rect x="20"  y="150" width="46" height="90"/>
-            <rect x="80"  y="120" width="34" height="120"/>
-            <rect x="130" y="160" width="52" height="80"/>
-            <rect x="210" y="132" width="40" height="108"/>
-            <rect x="280" y="150" width="60" height="90"/>
-            <rect x="370" y="118" width="36" height="122"/>
-            <rect x="430" y="150" width="70" height="90"/>
-            <rect x="540" y="140" width="44" height="100"/>
-            <rect x="640" y="126" width="54" height="114"/>
-            <rect x="740" y="150" width="60" height="90"/>
-            <rect x="840" y="134" width="40" height="106"/>
-            <rect x="930" y="150" width="66" height="90"/>
-            <rect x="1030" y="122" width="38" height="118"/>
-            <rect x="1090" y="150" width="70" height="90"/>
-          </g>
-          <!-- mid layer -->
-          <g fill="#a7adc0">
-            <rect x="60"  y="176" width="70" height="64"/>
-            <rect x="170" y="168" width="54" height="72"/>
-            <rect x="250" y="182" width="90" height="58"/>
-            <rect x="360" y="170" width="60" height="70"/>
-            <rect x="470" y="180" width="80" height="60"/>
-            <rect x="600" y="172" width="66" height="68"/>
-            <rect x="720" y="182" width="96" height="58"/>
-            <rect x="860" y="172" width="58" height="68"/>
-            <rect x="980" y="180" width="86" height="60"/>
-            <rect x="1110" y="176" width="70" height="64"/>
-          </g>
-          <!-- bridge deck + pillars -->
-          <g fill="#7a8196">
-            <rect x="0" y="196" width="1200" height="10"/>
-            <rect x="120" y="206" width="10" height="34"/>
-            <rect x="320" y="206" width="10" height="34"/>
-            <rect x="520" y="206" width="10" height="34"/>
-            <rect x="720" y="206" width="10" height="34"/>
-            <rect x="920" y="206" width="10" height="34"/>
-            <rect x="1120" y="206" width="10" height="34"/>
-          </g>
-          <!-- passing train -->
-          <g class="train" fill="#565d70">
-            <rect x="0"   y="176" width="70" height="22"/>
-            <rect x="74"  y="176" width="70" height="22"/>
-            <rect x="148" y="176" width="70" height="22"/>
-            <g fill="#f4bcd4" opacity="0.85">
-              <rect x="8"   y="181" width="10" height="8"/>
-              <rect x="26"  y="181" width="10" height="8"/>
-              <rect x="44"  y="181" width="10" height="8"/>
-              <rect x="82"  y="181" width="10" height="8"/>
-              <rect x="100" y="181" width="10" height="8"/>
-              <rect x="118" y="181" width="10" height="8"/>
-              <rect x="156" y="181" width="10" height="8"/>
-              <rect x="174" y="181" width="10" height="8"/>
-              <rect x="192" y="181" width="10" height="8"/>
-            </g>
-          </g>
-          <!-- foreground waterfront -->
-          <g fill="#565d70">
-            <rect x="0" y="210" width="150" height="30"/>
-            <rect x="1040" y="204" width="160" height="36"/>
-            <rect x="1076" y="188" width="26" height="52"/>
-          </g>
-        </svg>
-
-        <!-- cherry-blossom branch with a perched bird -->
-        <svg class="branch" viewBox="0 0 360 200" shape-rendering="crispEdges" aria-hidden="true">
-          <g fill="#40384f">
-            <path d="M360 34 L250 58 L150 92 L96 120 L360 120 L360 34 Z" opacity="0"/>
-            <rect x="250" y="52" width="110" height="12"/>
-            <rect x="180" y="64" width="90" height="11"/>
-            <rect x="120" y="80" width="80" height="10"/>
-            <rect x="70"  y="98" width="70" height="9"/>
-            <rect x="196" y="74" width="8" height="34"/>
-            <rect x="176" y="104" width="7" height="30"/>
-            <rect x="256" y="60" width="8" height="26"/>
-            <rect x="300" y="60" width="8" height="30"/>
-          </g>
-          <!-- blossom clusters -->
-          <g>
-            <g class="blossom" fill="#ef9fc0"><rect x="300" y="30" width="9" height="9"/><rect x="309" y="26" width="9" height="9"/><rect x="318" y="34" width="9" height="9"/><rect x="306" y="40" width="9" height="9"/></g>
-            <g class="blossom" fill="#f4bcd4"><rect x="336" y="40" width="9" height="9"/><rect x="345" y="36" width="9" height="9"/><rect x="342" y="48" width="9" height="9"/></g>
-            <g class="blossom" fill="#ef9fc0"><rect x="252" y="34" width="9" height="9"/><rect x="261" y="30" width="9" height="9"/><rect x="258" y="42" width="9" height="9"/></g>
-            <g class="blossom" fill="#f4bcd4"><rect x="190" y="108" width="9" height="9"/><rect x="199" y="112" width="9" height="9"/><rect x="196" y="120" width="9" height="9"/></g>
-            <g class="blossom" fill="#ef9fc0"><rect x="168" y="132" width="9" height="9"/><rect x="177" y="136" width="9" height="9"/><rect x="174" y="128" width="9" height="9"/></g>
-            <g class="blossom" fill="#f4bcd4"><rect x="120" y="70" width="9" height="9"/><rect x="129" y="66" width="9" height="9"/><rect x="126" y="78" width="9" height="9"/></g>
-            <g class="blossom" fill="#ef9fc0"><rect x="60" y="90" width="9" height="9"/><rect x="69" y="86" width="9" height="9"/><rect x="66" y="98" width="9" height="9"/></g>
-          </g>
-          <!-- bird -->
-          <g class="bird-perch">
-            <g fill="#a9ccc4">
-              <rect x="214" y="30" width="26" height="18"/>
-              <rect x="222" y="22" width="14" height="10"/>
-              <rect x="238" y="40" width="18" height="8"/>
-            </g>
-            <rect x="234" y="24" width="4" height="4" fill="#40384f"/>
-            <rect x="236" y="26" width="8" height="3" fill="#ef8b7e"/>
-            <rect x="220" y="36" width="12" height="7" fill="#6fa79c"/>
-            <rect x="222" y="48" width="3" height="6" fill="#6fa79c"/>
-            <rect x="230" y="48" width="3" height="6" fill="#6fa79c"/>
-          </g>
-        </svg>
-
-        <div class="water"></div>
+        <div class="scene-title">
+          <span class="scene-kicker">a compiler you can hear</span>
+          <h1>Klang</h1>
+          <p>Watch source become sound — one instrument joins for each stage of the pipeline.</p>
+        </div>
 
         <!-- the little orchestra, on a lit stage floor -->
         <div class="spotlight spotlight-left" aria-hidden="true"></div>
@@ -147,6 +48,13 @@
             <div class="hand hand-l"></div>
             <div class="hand hand-r"></div>
           </div>
+          <div class="performer conductor">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="baton-arm"></div>
+            <div class="podium"></div>
+          </div>
           <div class="performer flutist">
             <div class="hair"></div>
             <div class="head"></div>
@@ -156,13 +64,7 @@
           </div>
         </div>
 
-        <div class="petals" id="petals" aria-hidden="true"></div>
-
-        <div class="scene-title">
-          <span class="scene-kicker">a compiler you can hear</span>
-          <h1>Klang</h1>
-          <p>Watch source become sound — one instrument joins for each stage of the pipeline.</p>
-        </div>
+        <div class="scene-notes" id="sceneNotes" aria-hidden="true"></div>
       </section>
 
       <!-- -------------------------------------------------- toolbar -->
@@ -181,6 +83,7 @@
             <input id="soundToggle" type="checkbox" checked>
             <span id="soundStatus">Sound</span>
           </label>
+          <a class="btn" href="./about.html">About</a>
           <button id="resetButton" type="button" class="btn">Reset</button>
           <button id="runButton" type="button" class="btn primary">▶ Run</button>
         </div>
@@ -233,8 +136,11 @@
       </div>
 
       <footer class="site-foot">
-        <span>Klang · a tiny Python-like language, staged as sound</span>
-        <a href="https://github.com/david-grun/klang" target="_blank" rel="noopener">GitHub ↗</a>
+        <span>Klang · a tiny language whose compiler performs on stage</span>
+        <span>
+          <a href="./about.html">About</a> ·
+          <a href="https://github.com/david-grun/klang" target="_blank" rel="noopener">GitHub ↗</a>
+        </span>
       </footer>
     </main>
 

@@ -97,7 +97,7 @@ const els = {
   pipelineList: document.querySelector("#pipelineList"),
   legendList: document.querySelector("#legendList"),
   roll: document.querySelector("#roll"),
-  petals: document.querySelector("#petals"),
+  sceneNotes: document.querySelector("#sceneNotes"),
 };
 
 const sound = new KlangSound();
@@ -382,7 +382,8 @@ async function playStage(index, result, isFail, seq) {
     const scale = ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5"];
     const tokens = (result.tokens || []).filter((t) => !STRUCTURAL.has(t.type));
     const n = tokens.length || 1;
-    const spacing = Math.max(40, Math.min(95, 2200 / n));
+    // unhurried: each token gets a beat, capped so long programs still finish
+    const spacing = Math.max(110, Math.min(210, 5200 / n));
     for (let k = 0; k < tokens.length; k++) {
       if (seq !== runSeq) return;
       sound.triangle(scale[k % scale.length]);
@@ -475,24 +476,22 @@ async function performRun() {
   els.runButton.disabled = false;
 }
 
-// --------------------------------------------------------------- petals
+// ---------------------------------------------------- rising stage notes
 
-const PETAL_COLORS = ["#ef9fc0", "#f4bcd4", "#e58fb2"];
+const SCENE_NOTE_COLORS = ["#8a8ed0", "#6fb0a4", "#e58fb2", "#ec897b", "#a49cb2"];
 
-function spawnPetal() {
+function spawnSceneNote() {
   if (reduceMotion || document.hidden) return;
-  const petal = document.createElement("div");
-  petal.className = "petal";
-  petal.style.background = PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)];
-  petal.style.left = 40 + Math.random() * 58 + "%";
-  petal.style.top = -10 + Math.random() * 16 + "px";
-  const size = 6 + Math.floor(Math.random() * 4);
-  petal.style.width = size + "px";
-  petal.style.height = size + "px";
-  petal.style.setProperty("--drift", -30 - Math.random() * 90 + "px");
-  petal.style.animation = `petal-fall ${6 + Math.random() * 5}s linear forwards`;
-  els.petals.append(petal);
-  petal.addEventListener("animationend", () => petal.remove(), { once: true });
+  const note = document.createElement("span");
+  note.className = "scene-note";
+  note.textContent = NOTE_GLYPHS[Math.floor(Math.random() * NOTE_GLYPHS.length)];
+  note.style.left = 22 + Math.random() * 56 + "%";
+  note.style.color = SCENE_NOTE_COLORS[Math.floor(Math.random() * SCENE_NOTE_COLORS.length)];
+  note.style.fontSize = 13 + Math.floor(Math.random() * 8) + "px";
+  note.style.setProperty("--drift", -30 + Math.random() * 60 + "px");
+  note.style.animation = `note-rise ${4.5 + Math.random() * 3}s ease-out forwards`;
+  els.sceneNotes.append(note);
+  note.addEventListener("animationend", () => note.remove(), { once: true });
 }
 
 // -------------------------------------------------------------- controls
@@ -564,9 +563,12 @@ function init() {
   updateSoundStatus();
 
   if (!reduceMotion) {
-    for (let i = 0; i < 4; i++) setTimeout(spawnPetal, i * 600);
-    setInterval(spawnPetal, 950);
+    for (let i = 0; i < 3; i++) setTimeout(spawnSceneNote, i * 700);
+    setInterval(spawnSceneNote, 1400);
   }
+
+  // handy for demos and headless screenshots
+  if (location.hash === "#autorun") setTimeout(performRun, 300);
 }
 
 init();

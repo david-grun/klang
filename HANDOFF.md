@@ -9,11 +9,14 @@ JavaScript ES modules. The core compiler/interpreter pipeline is present:
 lexer, parser, resolver, semantic checker, and interpreter. The code is in the
 intended `src/` layout, with language design notes in `docs/`.
 
-The showcase uses a pixel-art dawn theme (soft pastel cityscape: coral sun,
-cherry-blossom branch with a perched bird, blue-gray skyline + bridge/train
-over water, drifting petals). The audio concept is "one instrument per
-pipeline stage": each stage joins in as it activates so a clean run builds up
-like a short symphony, and an error cuts the remaining instruments off. The
+The showcase uses a pixel-art theater theme in a light pastel palette: striped
+curtains and a scalloped valance frame a stage with a painted music staff on
+the back wall, spotlights, and a little orchestra (violinist, pianist,
+conductor with baton, flutist) that plays harder while a program runs. Music
+notes drift up from the pit; during the lexer stage a note also pops above
+each token in the editor. The audio concept is "one instrument per pipeline
+stage": each stage joins in as it activates so a clean run builds up like a
+short symphony, and an error cuts the remaining instruments off. The
 instrument map (all pure Web Audio, no Tone.js / CDN):
 
 - lexer -> triangle synth
@@ -22,7 +25,9 @@ instrument map (all pure Web Audio, no Tone.js / CDN):
 - semantic -> bell / FM
 - execute -> percussive membrane (one hit per output line)
 
-The web layer lives in `index.html` (scene + workbench markup), `styles.css`
+The web layer lives in `index.html` (scene + workbench markup), `about.html`
+(how Klang works, how to use it, and the honest "is it a new language"
+answer), `styles.css`
 (palette + scene animations), `sound.js` (the five instruments), and `app.js`
 (editor highlighting, the Symphony canvas roll, the pipeline sidebar, and the
 run orchestration that drives visuals and audio together off the real
