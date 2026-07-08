@@ -8,8 +8,8 @@ const samples = {
   hello: {
     label: "Hello",
     file: "hello.klang",
-    source: `def greet(name):
-    print("hello " + name)
+    source: `motif greet(name):
+    play("hello " + name)
 
 greet("Klang")
 `,
@@ -17,35 +17,35 @@ greet("Klang")
   fizzbuzz: {
     label: "FizzBuzz",
     file: "fizzbuzz.klang",
-    source: `for i in range(1, 16):
-    if i % 15 == 0:
-        print("FizzBuzz")
-    elif i % 3 == 0:
-        print("Fizz")
-    elif i % 5 == 0:
-        print("Buzz")
-    else:
-        print(i)
+    source: `loop i in scale(1, 16):
+    when i % 15 == 0:
+        play("FizzBuzz")
+    orwhen i % 3 == 0:
+        play("Fizz")
+    orwhen i % 5 == 0:
+        play("Buzz")
+    otherwise:
+        play(i)
 `,
   },
   oop: {
-    label: "Counter class",
+    label: "Counter ensemble",
     file: "counter.klang",
-    source: `class Counter:
-    def __init__(self, start):
+    source: `ensemble Counter:
+    motif tune(self, start):
         self._n = start
 
-    def bump(self):
+    motif bump(self):
         self._n = self._n + 1
 
-    def value(self):
-        return self._n
+    motif value(self):
+        resolve self._n
 
 c = Counter(10)
-for i in range(3):
+loop i in scale(3):
     c.bump()
 
-print(c.value())
+play(c.value())
 `,
   },
   semanticError: {
@@ -57,10 +57,10 @@ print(c.value())
   runtimeError: {
     label: "Runtime error",
     file: "runtime.klang",
-    source: `def divide(x):
-    return 1 / x
+    source: `motif divide(x):
+    resolve 1 / x
 
-print(divide(0))
+play(divide(0))
 `,
   },
 };

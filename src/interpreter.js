@@ -41,9 +41,9 @@ export class Interpreter {
       self.output.push(args.map(reprString).join(" "));
       return NONE;
     });
-    builtin("len", (args, line) => {
+    builtin("length", (args, line) => {
       const a = args[0];
-      if (!a || a.t !== "string") throw new RuntimeErr("len() expects a string", line);
+      if (!a || a.t !== "string") throw new RuntimeErr("length() expects a string", line);
       return mkInt(a.v.length);
     });
     builtin("str", (args) => mkStr(reprString(args[0] ?? NONE)));
@@ -68,16 +68,16 @@ export class Interpreter {
       throw new RuntimeErr(`cannot convert ${typeName(a)} to float`, line);
     });
     builtin("bool", (args) => mkBool(truthy(args[0] ?? NONE)));
-    builtin("range", (args, line) => {
+    builtin("scale", (args, line) => {
       const ints = args.map((a) => {
-        if (!isNumber(a)) throw new RuntimeErr("range() expects integer arguments", line);
+        if (!isNumber(a)) throw new RuntimeErr("scale() expects integer arguments", line);
         return Math.trunc(num(a));
       });
       let start = 0, stop = 0, step = 1;
       if (ints.length === 1) [stop] = ints;
       else if (ints.length === 2) [start, stop] = ints;
       else if (ints.length >= 3) [start, stop, step] = ints;
-      if (step === 0) throw new RuntimeErr("range() step cannot be zero", line);
+      if (step === 0) throw new RuntimeErr("scale() step cannot be zero", line);
       const items = [];
       if (step > 0) for (let i = start; i < stop; i += step) items.push(mkInt(i));
       else for (let i = start; i > stop; i += step) items.push(mkInt(i));
@@ -336,7 +336,7 @@ export class Interpreter {
 
   instantiate(klass, args, line) {
     const instance = { t: "instance", klass, fields: new Map() };
-    const init = klass.methods.get("__init__");
+    const init = klass.methods.get("tune"); // `tune` is Klang's constructor
     if (init) this.callFunction(init, [instance, ...args], line);
     else if (args.length > 0) {
       throw new RuntimeErr(`${klass.name}() takes no arguments`, line);

@@ -31,40 +31,40 @@ function failsAt(name, source, stage) {
 }
 
 // --- clean programs ---
-eq("arithmetic", "print(2 + 3 * 4)", "14");
-eq("float division", "print(7 / 2)", "3.5");
-eq("floor division", "print(7 // 2)", "3");
-eq("power", "print(2 ** 10)", "1024");
-eq("bool as number", "print(True + 1)", "2");
-eq("string concat", 'print("a" + "b")', "ab");
-eq("int conversion", 'print(int("41") + 1)', "42");
-eq("float repr", "print(float(7))", "7.0");
-eq("comparison", "print(3 < 5)", "True");
-eq("not/and/or", "print(not False and True)", "True");
-eq("if/elif/else", "x = 2\nif x == 1:\n    print('a')\nelif x == 2:\n    print('b')\nelse:\n    print('c')", "b");
-eq("while loop", "i = 0\nwhile i < 3:\n    print(i)\n    i = i + 1", "0\n1\n2");
-eq("for range", "for i in range(3):\n    print(i)", "0\n1\n2");
-eq("break", "for i in range(9):\n    if i == 2:\n        break\n    print(i)", "0\n1");
-eq("continue", "for i in range(4):\n    if i == 1:\n        continue\n    print(i)", "0\n2\n3");
-eq("function", "def sq(n):\n    return n * n\nprint(sq(6))", "36");
-eq("recursion", "def f(n):\n    if n <= 1:\n        return 1\n    return n * f(n - 1)\nprint(f(5))", "120");
-eq("closure", "def mk(n):\n    def add(x):\n        return x + n\n    return add\nprint(mk(5)(10))", "15");
-eq("global", "c = 0\ndef bump():\n    global c\n    c = c + 1\nbump()\nbump()\nprint(c)", "2");
-eq("local no leak", "c = 1\ndef f():\n    c = 99\n    return c\nprint(f())\nprint(c)", "99\n1");
-eq("oop", "class P:\n    def __init__(self, n):\n        self.n = n\n    def get(self):\n        return self.n\nprint(P(7).get())", "7");
-eq("encapsulation update", "class C:\n    def __init__(self):\n        self._v = 0\n    def inc(self):\n        self._v = self._v + 1\n    def get(self):\n        return self._v\nc = C()\nc.inc()\nc.inc()\nprint(c.get())", "2");
-eq("string iteration", 'for ch in "hi":\n    print(ch)', "h\ni");
+eq("arithmetic", "play(2 + 3 * 4)", "14");
+eq("float division", "play(7 / 2)", "3.5");
+eq("floor division", "play(7 // 2)", "3");
+eq("power", "play(2 ** 10)", "1024");
+eq("bool as number", "play(True + 1)", "2");
+eq("string concat", 'play("a" + "b")', "ab");
+eq("int conversion", 'play(int("41") + 1)', "42");
+eq("float repr", "play(float(7))", "7.0");
+eq("comparison", "play(3 < 5)", "True");
+eq("not/and/or", "play(not False and True)", "True");
+eq("when/orwhen/otherwise", "x = 2\nwhen x == 1:\n    play('a')\norwhen x == 2:\n    play('b')\notherwise:\n    play('c')", "b");
+eq("sustain loop", "i = 0\nsustain i < 3:\n    play(i)\n    i = i + 1", "0\n1\n2");
+eq("loop over scale", "loop i in scale(3):\n    play(i)", "0\n1\n2");
+eq("stop", "loop i in scale(9):\n    when i == 2:\n        stop\n    play(i)", "0\n1");
+eq("skip", "loop i in scale(4):\n    when i == 1:\n        skip\n    play(i)", "0\n2\n3");
+eq("motif", "motif sq(n):\n    resolve n * n\nplay(sq(6))", "36");
+eq("recursion", "motif f(n):\n    when n <= 1:\n        resolve 1\n    resolve n * f(n - 1)\nplay(f(5))", "120");
+eq("closure", "motif mk(n):\n    motif add(x):\n        resolve x + n\n    resolve add\nplay(mk(5)(10))", "15");
+eq("tutti", "c = 0\nmotif bump():\n    tutti c\n    c = c + 1\nbump()\nbump()\nplay(c)", "2");
+eq("local no leak", "c = 1\nmotif f():\n    c = 99\n    resolve c\nplay(f())\nplay(c)", "99\n1");
+eq("oop", "ensemble P:\n    motif tune(self, n):\n        self.n = n\n    motif get(self):\n        resolve self.n\nplay(P(7).get())", "7");
+eq("encapsulation update", "ensemble C:\n    motif tune(self):\n        self._v = 0\n    motif inc(self):\n        self._v = self._v + 1\n    motif get(self):\n        resolve self._v\nc = C()\nc.inc()\nc.inc()\nplay(c.get())", "2");
+eq("string iteration", 'loop ch in "hi":\n    play(ch)', "h\ni");
 
 // --- programs that must fail, at a specific stage ---
 failsAt("lex error", "x = 5 @ 3", "lexer");
-failsAt("syntax error", "if x > 5\n    print(1)", "parser");
-failsAt("undeclared var", "print(z)", "scope");
+failsAt("syntax error", "when x > 5\n    play(1)", "parser");
+failsAt("undeclared var", "play(z)", "scope");
 failsAt("type mismatch add", 'x = "a" + True', "semantic");
 failsAt("bad comparison", "y = 5 < \"ten\"", "semantic");
-failsAt("range on string", 'for i in range("3"):\n    print(i)', "semantic");
-failsAt("division by zero", "def d(x):\n    return 1 / x\nprint(d(0))", "execute");
-failsAt("undefined attribute", "class C:\n    def __init__(self):\n        self.a = 1\nprint(C().b)", "execute");
-failsAt("wrong arity", "def f(a, b):\n    return a\nprint(f(1))", "execute");
+failsAt("scale on string", 'loop i in scale("3"):\n    play(i)', "semantic");
+failsAt("division by zero", "motif d(x):\n    resolve 1 / x\nplay(d(0))", "execute");
+failsAt("undefined attribute", "ensemble C:\n    motif tune(self):\n        self.a = 1\nplay(C().b)", "execute");
+failsAt("wrong arity", "motif f(a, b):\n    resolve a\nplay(f(1))", "execute");
 
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

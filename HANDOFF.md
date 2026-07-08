@@ -4,9 +4,13 @@ Read this first when resuming the project.
 
 ## Current state
 
-Klang is a small Python-like language core written in dependency-free
-JavaScript ES modules. The core compiler/interpreter pipeline is present:
-lexer, parser, resolver, semantic checker, and interpreter. The code is in the
+Klang is a small language with a music-themed syntax (functions are `motif`s,
+classes are `ensemble`s, output is `play`, loops are `sustain`/`loop … in
+scale(...)`, conditionals are `when`/`orwhen`/`otherwise`), written in
+dependency-free JavaScript ES modules. The core compiler/interpreter pipeline
+is present: lexer, parser, resolver, semantic checker, and interpreter. The
+surface keywords live in `src/token.js`, which maps each to a canonical
+internal keyword so the rest of the compiler is unchanged. The code is in the
 intended `src/` layout, with language design notes in `docs/`.
 
 The showcase uses a pixel-art theater theme in a warm cream palette (parchment

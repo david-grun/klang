@@ -1,4 +1,4 @@
-def greet(name):
-    print("hello " + name)
+motif greet(name):
+    play("hello " + name)
 
 greet("Klang")

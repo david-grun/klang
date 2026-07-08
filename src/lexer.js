@@ -140,7 +140,8 @@ export function tokenize(source) {
           const spec = LITERAL_WORDS[word];
           push(spec.type, spec.value, lineNo, col);
         } else if (KEYWORDS.has(word)) {
-          push(TokenType.KEYWORD, word, lineNo, col);
+          // emit the canonical keyword the rest of the compiler understands
+          push(TokenType.KEYWORD, KEYWORDS.get(word), lineNo, col);
         } else {
           push(TokenType.IDENTIFIER, word, lineNo, col);
         }

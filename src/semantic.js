@@ -75,15 +75,15 @@ export function check(program, moduleScope) {
           return "string";
         case "bool":
           return "bool";
-        case "len":
+        case "length":
           if (node.args.length === 1 && isKnown(argTypes[0]) && argTypes[0] !== "string") {
-            err(`len() expects a string, got ${argTypes[0]}`, node.line);
+            err(`length() expects a string, got ${argTypes[0]}`, node.line);
           }
           return "int";
-        case "range":
+        case "scale":
           for (const t of argTypes) {
             if (isKnown(t) && !isNum(t)) {
-              err(`range() expects integer arguments, got ${t}`, node.line);
+              err(`scale() expects integer arguments, got ${t}`, node.line);
             }
           }
           return "range";

@@ -1,12 +1,13 @@
 # Klang
 
-A small, Python-like programming language whose entire compiler pipeline is
-built to be visible and audible through a German-classical score metaphor. This
-repository contains the language core:
-lexer, parser, scope resolver, semantic checker, and interpreter, all running
-end to end with no dependencies. It also includes a browser showcase that pops
-animated notes above the source text and plays a generated piano-like classical
-phrase while the compile/interpreter pipeline is presented.
+A small programming language with a music-themed syntax (a function is a
+`motif`, a class is an `ensemble`, output is `play`) whose entire compiler
+pipeline is built to be visible and audible. This repository contains the
+language core: lexer, parser, scope resolver, semantic checker, and interpreter,
+all running end to end with no dependencies. It also includes a browser showcase
+where an on-stage orchestra performs the pipeline — a highlight sweeps through
+the source token by token, one instrument joins per stage, and an error stops
+the orchestra out of tune.
 
 ## Run it
 
@@ -76,23 +77,27 @@ graceful-failure behavior is easy to demo.
 ## Language at a glance
 
 ```klang
-class Counter:
-    def __init__(self, start):
+ensemble Counter:
+    motif tune(self, start):
         self._n = start          # _prefix is "private by convention"
 
-    def bump(self):
+    motif bump(self):
         self._n = self._n + 1
 
-    def value(self):
-        return self._n
+    motif value(self):
+        resolve self._n
 
 c = Counter(10)
-for i in range(3):
+loop i in scale(3):
     c.bump()
 
-if c.value() > 10:
-    print("counted up to:")
-    print(c.value())
+when c.value() > 10:
+    play("counted up to:")
+    play(c.value())
 ```
 
-Full syntax and type rules are in `docs/LANGUAGE_DESIGN.md`.
+Klang's keywords are performance directions: `motif` (function), `ensemble`
+(class), `tune` (constructor), `play` (print), `when`/`orwhen`/`otherwise`
+(if/elif/else), `sustain` (while), `loop … in scale(...)` (for), `resolve`
+(return), `stop`/`skip` (break/continue), `tutti` (global), `rest` (None). Full
+syntax and type rules are in `docs/LANGUAGE_DESIGN.md`.

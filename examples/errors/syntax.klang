@@ -1,2 +1,2 @@
-if x > 5
-    print(1)
+when x > 5
+    play(1)

@@ -102,10 +102,12 @@
           entirely from scratch: its own lexer, recursive-descent parser, scope
           resolver, semantic checker, and tree-walking interpreter, written in
           dependency-free JavaScript (see <code>src/</code>). No Python runs
-          anywhere. Its <em>surface syntax</em> is deliberately Python-like so
-          programs are instantly readable, but the grammar, token set, scoping
-          rules, and gradual type system are Klang's own, specified in
-          <code>docs/LANGUAGE_DESIGN.md</code>.
+          anywhere. Klang has its own <em>music-themed</em> keywords — you write
+          <code>motif</code> for a function, <code>ensemble</code> for a class,
+          <code>play</code> to output, <code>when / orwhen / otherwise</code> for
+          conditionals, <code>loop … in scale(...)</code> and <code>sustain</code>
+          for loops. The grammar, token set, scoping rules, and gradual type
+          system are Klang's own, specified in <code>docs/LANGUAGE_DESIGN.md</code>.
         </p>
 
         <h2>The five stages (and their instruments)</h2>
@@ -123,6 +125,28 @@
           perform, the bell strikes a sour note, and Execute stays silent.
         </p>
 
+        <h2>The vocabulary</h2>
+        <p>Klang reads like a score. Each keyword is a performance direction:</p>
+        <div class="stage-table">
+          <div class="stage-card"><strong>motif</strong><span>define a reusable phrase (a function)</span></div>
+          <div class="stage-card"><strong>resolve</strong><span>hand a value back from a motif (return)</span></div>
+          <div class="stage-card"><strong>play</strong><span>perform / print a value to the console</span></div>
+          <div class="stage-card"><strong>when · orwhen · otherwise</strong><span>conditionals (if · elif · else)</span></div>
+          <div class="stage-card"><strong>sustain</strong><span>keep looping while a condition holds (while)</span></div>
+          <div class="stage-card"><strong>loop … in …</strong><span>iterate over a sequence (for-each)</span></div>
+          <div class="stage-card"><strong>scale(a, b)</strong><span>a run of numbers to loop over (range)</span></div>
+          <div class="stage-card"><strong>stop · skip</strong><span>leave the loop · jump to the next turn (break · continue)</span></div>
+          <div class="stage-card"><strong>ensemble · tune</strong><span>define a class · its constructor</span></div>
+          <div class="stage-card"><strong>tutti</strong><span>bind a name in the whole-ensemble (module) scope (global)</span></div>
+          <div class="stage-card"><strong>rest</strong><span>the empty value / silence (None)</span></div>
+          <div class="stage-card"><strong>length(s)</strong><span>how many characters are in a string</span></div>
+        </div>
+        <p>
+          Numbers, strings, <code>True</code>/<code>False</code>, the operators
+          (<code>+ - * / // % **</code>, comparisons, <code>and / or / not</code>),
+          indentation-defined blocks, and <code>#</code> comments work as you'd expect.
+        </p>
+
         <h2>How to use the site</h2>
         <ol>
           <li>Pick an example from the <strong>Example</strong> menu, or type your own program in the editor.</li>
@@ -132,30 +156,30 @@
         </ol>
 
         <h2>A taste of the language</h2>
-        <pre><code># functions, closures, recursion
-def countdown(n):
-    if n == 0:
-        print("liftoff")
-        return
-    print(n)
+        <pre><code># a motif is a reusable phrase (function), with recursion
+motif countdown(n):
+    when n == 0:
+        play("liftoff")
+        resolve
+    play(n)
     countdown(n - 1)
 
 countdown(3)
 
-# classes and methods
-class Counter:
-    def __init__(self, start):
+# an ensemble groups behaviour (a class); tune is its constructor
+ensemble Counter:
+    motif tune(self, start):
         self._n = start
-    def bump(self):
+    motif bump(self):
         self._n = self._n + 1
 
 c = Counter(10)
 c.bump()
-print(c._n)   # 11</code></pre>
+play(c._n)   # 11</code></pre>
         <ul>
-          <li><strong>Types:</strong> <code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, <code>None</code>; explicit conversions via <code>int()</code>, <code>str()</code>, …</li>
-          <li><strong>Control flow:</strong> <code>if / elif / else</code>, <code>while</code>, <code>for … in range(...)</code> (or over a string), <code>break</code>, <code>continue</code>.</li>
-          <li><strong>Scope:</strong> lexical LEGB with closures; <code>global</code> writes to module scope; undeclared names are caught <em>before</em> the program runs.</li>
+          <li><strong>Types:</strong> <code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, <code>rest</code> (the empty value); explicit conversions via <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>bool()</code>.</li>
+          <li><strong>Control flow:</strong> <code>when / orwhen / otherwise</code>, <code>sustain</code> (while), <code>loop … in scale(...)</code> or over a string, <code>stop</code>, <code>skip</code>.</li>
+          <li><strong>Scope:</strong> lexical LEGB with closures; <code>tutti</code> writes to module scope; undeclared names are caught <em>before</em> the program runs.</li>
           <li><strong>Checking:</strong> gradual — definite type errors like <code>"a" + True</code> are rejected by the semantic stage; the rest is enforced at runtime with the same messages.</li>
         </ul>
 

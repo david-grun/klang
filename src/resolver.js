@@ -18,7 +18,7 @@
 
 import { ScopeError } from "./errors.js";
 
-const BUILTINS = new Set(["print", "len", "int", "float", "str", "bool", "range"]);
+const BUILTINS = new Set(["print", "length", "int", "float", "str", "bool", "scale"]);
 
 class Scope {
   constructor(kind, parent) {

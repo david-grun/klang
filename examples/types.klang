@@ -3,10 +3,10 @@ half = 7 / 2
 whole = 7 // 2
 truth = bool(n)
 
-print(n)
-print(half)
-print(whole)
-print(str(truth))
+play(n)
+play(half)
+play(whole)
+play(str(truth))
 
-for ch in "ok":
-    print(ch)
+loop ch in "ok":
+    play(ch)

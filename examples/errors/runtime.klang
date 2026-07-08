@@ -1,4 +1,4 @@
-def divide(x):
-    return 1 / x
+motif divide(x):
+    resolve 1 / x
 
-print(divide(0))
+play(divide(0))
