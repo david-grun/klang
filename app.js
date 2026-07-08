@@ -438,7 +438,7 @@ async function playStage(index, result, isFail, seq) {
     pushRoll(index);
     pushRoll(index);
     sound.glitch();
-    await wait(900);
+    await wait(1500);
     return;
   }
 

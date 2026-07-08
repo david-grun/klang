@@ -240,25 +240,25 @@ export class KlangSound {
     if (!this._ready()) return;
     const ctx = this.context;
     const when = ctx.currentTime + 0.005;
-    const dur = 0.85;
+    const dur = 1.5;
     const base = freq("E4");
 
     const bus = ctx.createGain();
     bus.gain.setValueAtTime(0.0001, when);
     bus.gain.exponentialRampToValueAtTime(0.11, when + 0.02);
-    bus.gain.setValueAtTime(0.11, when + dur * 0.45);
+    bus.gain.setValueAtTime(0.11, when + dur * 0.6);
     bus.gain.exponentialRampToValueAtTime(0.0001, when + dur);
     const tone = ctx.createBiquadFilter();
     tone.type = "lowpass";
     tone.frequency.value = 2400;
     bus.connect(tone).connect(this.master);
 
-    // ~55 cents apart, both bending down a whole step
+    // ~55 cents apart, both sagging down a minor third over the note
     for (const detune of [1, 1.032]) {
       const osc = ctx.createOscillator();
       osc.type = "triangle";
       osc.frequency.setValueAtTime(base * detune, when);
-      osc.frequency.exponentialRampToValueAtTime(base * detune * 0.86, when + dur);
+      osc.frequency.exponentialRampToValueAtTime(base * detune * 0.82, when + dur);
       osc.connect(bus);
       osc.start(when);
       osc.stop(when + dur + 0.05);
