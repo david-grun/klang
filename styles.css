@@ -3,58 +3,65 @@
    cherry-blossom pink, blue-gray skyline, plum branch, teal bird. */
 
 :root {
-  --bg: #2e2739;
-  --panel: #3c3450;
-  --panel-2: #362f48;
-  --panel-3: #453c5c;
-  --border: #4c4363;
-  --border-strong: #5d5378;
-  --text-primary: #eee9f4;
-  --text-secondary: #b9b0cc;
-  --text-muted: #8b819f;
+  --bg: #c8b58c;
+  --panel: #f7eed9;
+  --panel-2: #efe3c9;
+  --panel-3: #e6d7b6;
+  --border: #dccaa4;
+  --border-strong: #c6b083;
+  --text-primary: #3c2c1b;
+  --text-secondary: #6e5b43;
+  --text-muted: #9a866a;
 
-  --danger-bg: #46242e;
-  --danger-border: #7c3a47;
-  --danger-text: #f2a8b2;
-  --success-text: #7fd0a8;
+  --danger-bg: #f7e2d6;
+  --danger-border: #e2b19a;
+  --danger-text: #b0402c;
+  --success-text: #3f8a5c;
 
-  /* theater back wall */
-  --wall-top: #5b4d73;
-  --wall-bottom: #493e5e;
-  --wall-decor: #6f6190;
+  /* theater backdrop */
+  --wall-top: #efe6cf;
+  --wall-bottom: #e2d4b2;
 
-  /* theater proscenium + performers */
-  --curtain: #a83a42;
-  --curtain-dark: #8c2b34;
-  --curtain-edge: #6e2029;
+  /* theater proscenium + stage */
+  --curtain: #b23636;
+  --curtain-dark: #8e2727;
+  --curtain-edge: #6d1c1c;
   --tieback: #d9a441;
-  --floor: #362d49;
-  --floor-dark: #2b2439;
-  --floor-edge: #4d4268;
+  --floor: #9a6738;
+  --floor-dark: #7a4f28;
+  --floor-edge: #5f3d1e;
+  --arch: #e0c88a;
+  --arch-dark: #c7ab68;
+  --carpet: #a3312f;
+  --carpet-dark: #832826;
+
+  /* performers */
   --skin: #f1c8ab;
   --skin-2: #9c6a44;
-  --wig: #f2eef6;
-  --hair: #4f4560;
-  --coat: #332d4d;
-  --coat-2: #3d3560;
-  --stocking: #e9e4ee;
+  --wig: #f4f0ea;
+  --coat: #2c2942;
+  --coat-2: #363258;
+  --stocking: #ece7dd;
   --gold: #d9a441;
   --cello: #8a5a35;
   --cello-dark: #6f4628;
 
-  /* token colours (bright, for the dark editor) */
-  --c-keyword: #b3a7f2;
-  --c-identifier: #74c9b0;
-  --c-operator: #f29a72;
-  --c-literal: #f090b4;
-  --c-comment: #8d84a3;
+  /* token colours (warm, for the cream editor) */
+  --c-keyword: #b23636;
+  --c-identifier: #2f8069;
+  --c-operator: #c06a17;
+  --c-literal: #9c3d6a;
+  --c-comment: #a08a68;
 
   /* one hue per pipeline stage */
-  --stage-lexer: #f0907f;
-  --stage-parser: #ef9cbd;
-  --stage-scope: #7fc4b4;
-  --stage-semantic: #a49ae8;
-  --stage-execute: #cfc4e6;
+  --stage-lexer: #c0453a;
+  --stage-parser: #b5568f;
+  --stage-scope: #2f8f7a;
+  --stage-semantic: #c9971f;
+  --stage-execute: #7a4e9a;
+
+  /* tracker highlight sweeping through the source */
+  --tracker: rgba(217, 164, 65, 0.6);
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
@@ -69,7 +76,7 @@ body {
   margin: 0;
   padding: 28px 16px 48px;
   background:
-    radial-gradient(1200px 400px at 50% -140px, #3a3150 0%, var(--bg) 60%),
+    radial-gradient(1200px 400px at 50% -140px, #d8c69c 0%, var(--bg) 60%),
     var(--bg);
   font-family: var(--font-sans);
   color: var(--text-primary);
@@ -86,7 +93,7 @@ body {
   border: 2px solid var(--border-strong);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 24px 60px -30px rgba(10, 6, 18, 0.8);
+  box-shadow: 0 24px 60px -30px rgba(70, 45, 20, 0.5);
 }
 
 /* ---------------------------------------------------------------- scene */
@@ -96,28 +103,31 @@ body {
   height: clamp(320px, 40vw, 420px);
   overflow: hidden;
   background:
-    radial-gradient(680px 340px at 50% 100%, rgba(158, 138, 200, 0.26) 0%, rgba(158, 138, 200, 0) 66%),
+    radial-gradient(560px 360px at 50% 0%, rgba(255, 244, 214, 0.7) 0%, rgba(255, 244, 214, 0) 62%),
     linear-gradient(180deg, var(--wall-top) 0%, var(--wall-bottom) 100%);
   image-rendering: pixelated;
 }
 
-/* arched hall windows on the back wall */
-.wall-window {
+/* gold proscenium arch framing the stage opening */
+.arch {
   position: absolute;
-  top: 18%;
-  width: 58px;
-  height: 140px;
-  z-index: 0;
-  background-color: var(--wall-decor);
-  background-image:
-    linear-gradient(90deg, transparent 0 26px, var(--wall-bottom) 26px 30px, transparent 30px),
-    repeating-linear-gradient(180deg, transparent 0 26px, var(--wall-bottom) 26px 30px);
-  border-radius: 29px 29px 0 0;
-  opacity: 0.55;
+  left: 13%; right: 13%; top: 12px; bottom: 40px;
+  z-index: 5;
+  border: 11px solid var(--arch);
+  border-bottom: none;
+  border-radius: 60px 60px 0 0;
+  box-shadow: inset 0 0 0 2px var(--arch-dark);
+  pointer-events: none;
 }
 
-/* standing candelabras flanking the orchestra */
-.candelabra { position: absolute; bottom: 96px; width: 44px; height: 110px; z-index: 1; opacity: 0.9; }
+/* pleated cream backdrop drapes behind the orchestra */
+.backdrop {
+  position: absolute;
+  left: 15%; right: 15%; top: 26px; bottom: 62px;
+  z-index: 0;
+  background: repeating-linear-gradient(90deg, #f2ead4 0 13px, #e6d9b8 13px 19px);
+  border-radius: 48px 48px 0 0;
+}
 
 /* proscenium: a light-palette valance + side curtains frame the stage. */
 .valance {
@@ -184,7 +194,7 @@ body {
   width: max-content;
   max-width: 62%;
   text-align: center;
-  text-shadow: 0 2px 10px rgba(18, 12, 30, 0.6);
+  text-shadow: 0 2px 12px rgba(255, 248, 228, 0.9);
 }
 .scene-kicker {
   font-family: var(--font-pixel);
@@ -199,7 +209,7 @@ body {
   font-size: clamp(26px, 4.6vw, 40px);
   font-weight: 400;
   letter-spacing: 0.02em;
-  color: var(--wig);
+  color: var(--curtain-dark);
   line-height: 1.1;
 }
 .scene-title p {
@@ -218,9 +228,19 @@ body {
   height: 64px;
   z-index: 2;
   background:
-    repeating-linear-gradient(90deg, rgba(120, 104, 150, 0.28) 0 2px, transparent 2px 42px),
+    repeating-linear-gradient(90deg, rgba(60, 38, 18, 0.25) 0 2px, transparent 2px 46px),
     linear-gradient(180deg, var(--floor) 0%, var(--floor-dark) 100%);
   border-top: 3px solid var(--floor-edge);
+}
+
+/* red carpet runner under the orchestra */
+.carpet {
+  position: absolute;
+  left: 26%; right: 26%; bottom: 0;
+  height: 34px;
+  z-index: 2;
+  background: linear-gradient(180deg, var(--carpet) 0%, var(--carpet-dark) 100%);
+  clip-path: polygon(14% 0, 86% 0, 100% 100%, 0% 100%);
 }
 
 .spotlight {
@@ -471,13 +491,27 @@ body {
 
 /* floating notes that pop above each token as the lexer reads it */
 .source-note-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 4; }
+
+/* tracker: a highlight cell lights up the token being read, then fades */
+.tracker-cell {
+  position: absolute;
+  border-radius: 3px;
+  background: var(--tracker);
+  box-shadow: 0 0 0 1px rgba(217, 164, 65, 0.7);
+  animation: tracker-fade 900ms ease-out forwards;
+}
+@keyframes tracker-fade {
+  0% { opacity: 1; }
+  60% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
 .source-note {
   position: absolute;
   font-size: 16px;
   font-weight: 700;
   line-height: 1;
   transform: translate(-50%, 0);
-  text-shadow: 0 1px 3px rgba(18, 12, 30, 0.85);
+  text-shadow: 0 1px 2px rgba(247, 238, 217, 0.95);
   animation: note-pop 2100ms ease-out forwards;
   will-change: transform, opacity;
 }
@@ -516,7 +550,7 @@ body {
   caret-color: var(--text-primary);
   outline: none;
 }
-#sourceInput::selection { background: rgba(179, 167, 242, 0.3); }
+#sourceInput::selection { background: rgba(217, 164, 65, 0.35); }
 
 .tok-keyword { color: var(--c-keyword); }
 .tok-identifier { color: var(--c-identifier); }
@@ -593,7 +627,7 @@ body {
   border: 1px solid transparent;
   transition: background 0.15s, border-color 0.15s;
 }
-.pipe-row.active { background: rgba(255, 255, 255, 0.07); border-color: var(--border-strong); }
+.pipe-row.active { background: var(--panel); border-color: var(--border-strong); }
 .pipe-icon { width: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
 .pipe-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .pipe-label { flex: 1; }

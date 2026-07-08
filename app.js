@@ -67,11 +67,11 @@ print(divide(0))
 
 // one instrument (and one hue) per pipeline stage
 const STAGE_META = {
-  lexer: { label: "Lexer", instrument: "triangle synth", color: "#f0907f" },
-  parser: { label: "Parser", instrument: "plucked string", color: "#ef9cbd" },
-  scope: { label: "Scope", instrument: "soft pad", color: "#7fc4b4" },
-  semantic: { label: "Semantic", instrument: "bell · FM", color: "#a49ae8" },
-  execute: { label: "Execute", instrument: "membrane drum", color: "#cfc4e6" },
+  lexer: { label: "Lexer", instrument: "triangle synth", color: "#c0453a" },
+  parser: { label: "Parser", instrument: "plucked string", color: "#b5568f" },
+  scope: { label: "Scope", instrument: "soft pad", color: "#2f8f7a" },
+  semantic: { label: "Semantic", instrument: "bell · FM", color: "#c9971f" },
+  execute: { label: "Execute", instrument: "membrane drum", color: "#7a4e9a" },
 };
 const STAGE_COLORS = STAGES.map((key) => STAGE_META[key].color);
 
@@ -164,11 +164,11 @@ function syncScroll() {
 // ----------------------------------------------------- token note pops
 
 const CATEGORY_COLOR = {
-  keyword: "#b3a7f2",
-  identifier: "#74c9b0",
-  operator: "#f29a72",
-  literal: "#f090b4",
-  structural: "#8d84a3",
+  keyword: "#b23636",
+  identifier: "#2f8069",
+  operator: "#c06a17",
+  literal: "#9c3d6a",
+  structural: "#a08a68",
 };
 const NOTE_GLYPHS = ["♪", "♫", "♩", "♬"];
 let measureCanvas = null;
@@ -194,7 +194,28 @@ function tokenPosition(token) {
   const y = padTop + (token.line - 1) * lineHeight - ta.scrollTop;
   if (y < -4 || y > ta.clientHeight - 6) return null;
   if (x < -8 || x > ta.clientWidth + 8) return null;
-  return { x, y };
+  return { x, y, charWidth, lineHeight };
+}
+
+// how many source characters the token spans (strings include their quotes)
+function tokenDisplayLength(token) {
+  if (token.type === "STRING") return String(token.value).length + 2;
+  if (token.value === null || token.value === undefined) return String(token.type).length;
+  return Math.max(1, String(token.value).length);
+}
+
+// tracker highlight: light up the exact token being read, then let it fade
+function highlightToken(token) {
+  const pos = tokenPosition(token);
+  if (!pos) return;
+  const cell = document.createElement("span");
+  cell.className = "tracker-cell";
+  cell.style.left = `${pos.x - 1}px`;
+  cell.style.top = `${pos.y}px`;
+  cell.style.width = `${tokenDisplayLength(token) * pos.charWidth + 2}px`;
+  cell.style.height = `${pos.lineHeight}px`;
+  els.sourceNotes.append(cell);
+  cell.addEventListener("animationend", () => cell.remove(), { once: true });
 }
 
 function popSourceNote(token) {
@@ -306,10 +327,10 @@ function drawRoll() {
   for (let i = 0; i < STAGES.length; i++) {
     const y = i * laneH;
     if (i % 2 === 0) {
-      rollCtx.fillStyle = "rgba(255,255,255,0.035)";
+      rollCtx.fillStyle = "rgba(60,44,27,0.05)";
       rollCtx.fillRect(0, y, w, laneH);
     }
-    rollCtx.strokeStyle = "rgba(255,255,255,0.08)";
+    rollCtx.strokeStyle = "rgba(60,44,27,0.09)";
     rollCtx.beginPath();
     rollCtx.moveTo(0, y);
     rollCtx.lineTo(w, y);
@@ -388,6 +409,7 @@ async function playStage(index, result, isFail, seq) {
       if (seq !== runSeq) return;
       sound.triangle(scale[k % scale.length]);
       pushRoll(index);
+      highlightToken(tokens[k]);
       popSourceNote(tokens[k]);
       await wait(spacing);
     }
@@ -478,7 +500,7 @@ async function performRun() {
 
 // ---------------------------------------------------- rising stage notes
 
-const SCENE_NOTE_COLORS = ["#a49ae8", "#7fc4b4", "#ef9cbd", "#f0907f", "#cfc4e6"];
+const SCENE_NOTE_COLORS = ["#c0453a", "#b5568f", "#2f8f7a", "#c9971f", "#7a4e9a"];
 
 function spawnSceneNote() {
   if (reduceMotion || document.hidden) return;
