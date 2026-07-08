@@ -37,7 +37,7 @@ export class KlangSound {
       this.master.gain.cancelScheduledValues(now);
       this.master.gain.setTargetAtTime(0.0001, now, 0.02);
     } else if (enabled && this.master && this.context) {
-      this.master.gain.setTargetAtTime(0.44, this.context.currentTime, 0.05);
+      this.master.gain.setTargetAtTime(0.85, this.context.currentTime, 0.05);
     }
   }
 
@@ -58,9 +58,19 @@ export class KlangSound {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContextClass();
 
+    // A limiter on the output lets us push the level hard without harsh
+    // clipping when many voices stack up.
+    const limiter = ctx.createDynamicsCompressor();
+    limiter.threshold.value = -6;
+    limiter.knee.value = 6;
+    limiter.ratio.value = 12;
+    limiter.attack.value = 0.003;
+    limiter.release.value = 0.2;
+    limiter.connect(ctx.destination);
+
     // gentle stereo-ish room: a short feedback delay for air.
     const master = ctx.createGain();
-    master.gain.value = 0.44;
+    master.gain.value = 0.85;
 
     const delay = ctx.createDelay(0.6);
     delay.delayTime.value = 0.19;
@@ -69,10 +79,10 @@ export class KlangSound {
     const room = ctx.createGain();
     room.gain.value = 0.14;
 
-    master.connect(ctx.destination);
+    master.connect(limiter);
     master.connect(delay);
     delay.connect(feedback).connect(delay);
-    delay.connect(room).connect(ctx.destination);
+    delay.connect(room).connect(limiter);
 
     this.context = ctx;
     this.master = master;
