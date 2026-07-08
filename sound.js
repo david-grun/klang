@@ -37,7 +37,7 @@ export class KlangSound {
       this.master.gain.cancelScheduledValues(now);
       this.master.gain.setTargetAtTime(0.0001, now, 0.02);
     } else if (enabled && this.master && this.context) {
-      this.master.gain.setTargetAtTime(0.32, this.context.currentTime, 0.05);
+      this.master.gain.setTargetAtTime(0.44, this.context.currentTime, 0.05);
     }
   }
 
@@ -60,7 +60,7 @@ export class KlangSound {
 
     // gentle stereo-ish room: a short feedback delay for air.
     const master = ctx.createGain();
-    master.gain.value = 0.32;
+    master.gain.value = 0.44;
 
     const delay = ctx.createDelay(0.6);
     delay.delayTime.value = 0.19;

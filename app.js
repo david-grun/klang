@@ -300,6 +300,27 @@ function renderLegend() {
 const rollCtx = els.roll.getContext("2d");
 const rollWrap = els.roll.parentElement;
 let rollNotes = [];
+let rollCursor = null;
+
+const CLEF_W = 52; // space reserved on the left for the clef
+
+function rollStartX() {
+  return CLEF_W + 6;
+}
+
+// the five staff lines double as the five pipeline lanes
+function staffY(stageIndex, h) {
+  const top = 26;
+  const bottom = h - 22;
+  const gap = (bottom - top) / (STAGES.length - 1);
+  return top + stageIndex * gap;
+}
+
+function noteLetter(name) {
+  if (!name) return "";
+  const m = name.match(/[A-Ga-g]/);
+  return m ? m[0].toUpperCase() : "";
+}
 
 function resizeRoll() {
   const dpr = window.devicePixelRatio || 1;
@@ -310,54 +331,77 @@ function resizeRoll() {
 
 function resetRoll() {
   rollNotes = [];
+  rollCursor = rollStartX();
 }
 
-function pushRoll(stageIndex, x) {
+// each played note is written onto the staff left to right, wrapping around
+function pushRoll(stageIndex, noteName) {
   const w = rollWrap.clientWidth;
-  const px = x === undefined ? 24 + Math.random() * (w - 48) : x;
-  rollNotes.push({ stage: stageIndex, t: 0, x: px });
+  if (rollCursor === null || rollCursor > w - 22) rollCursor = rollStartX();
+  rollNotes.push({ stage: stageIndex, x: rollCursor, t: 0, letter: noteLetter(noteName) });
+  rollCursor += 22;
+}
+
+// a filled, tilted notehead with a stem and flag — an eighth note
+function drawEighthNote(x, y, color, alpha, letter) {
+  rollCtx.globalAlpha = alpha;
+  rollCtx.fillStyle = color;
+  rollCtx.strokeStyle = color;
+  rollCtx.lineWidth = 1.6;
+  rollCtx.beginPath();
+  rollCtx.moveTo(x + 5, y - 1);
+  rollCtx.lineTo(x + 5, y - 19);
+  rollCtx.stroke();
+  rollCtx.beginPath();
+  rollCtx.moveTo(x + 5, y - 19);
+  rollCtx.quadraticCurveTo(x + 13, y - 15, x + 9, y - 6);
+  rollCtx.stroke();
+  rollCtx.save();
+  rollCtx.translate(x, y);
+  rollCtx.rotate(-0.34);
+  rollCtx.beginPath();
+  rollCtx.ellipse(0, 0, 6, 4.4, 0, 0, Math.PI * 2);
+  rollCtx.fill();
+  rollCtx.restore();
+  if (letter) {
+    rollCtx.globalAlpha = alpha * 0.95;
+    rollCtx.fillStyle = "#f7eed9";
+    rollCtx.font = "700 7px ui-monospace, monospace";
+    rollCtx.textAlign = "center";
+    rollCtx.textBaseline = "middle";
+    rollCtx.fillText(letter, x, y + 0.5);
+  }
+  rollCtx.globalAlpha = 1;
 }
 
 function drawRoll() {
   const w = rollWrap.clientWidth;
   const h = rollWrap.clientHeight;
   rollCtx.clearRect(0, 0, w, h);
-  const laneH = h / STAGES.length;
 
+  // five-line staff — one line per pipeline stage
+  rollCtx.lineWidth = 1;
   for (let i = 0; i < STAGES.length; i++) {
-    const y = i * laneH;
-    if (i % 2 === 0) {
-      rollCtx.fillStyle = "rgba(60,44,27,0.05)";
-      rollCtx.fillRect(0, y, w, laneH);
-    }
-    rollCtx.strokeStyle = "rgba(60,44,27,0.09)";
+    const y = staffY(i, h);
+    rollCtx.strokeStyle = "rgba(60,44,27,0.30)";
     rollCtx.beginPath();
-    rollCtx.moveTo(0, y);
-    rollCtx.lineTo(w, y);
+    rollCtx.moveTo(8, y);
+    rollCtx.lineTo(w - 10, y);
     rollCtx.stroke();
-
-    // faint stage tint on the left edge
+    // stage colour key at the far right of each line
     rollCtx.fillStyle = STAGE_COLORS[i];
-    rollCtx.globalAlpha = 0.5;
-    rollCtx.fillRect(0, y, 3, laneH);
-    rollCtx.globalAlpha = 1;
+    rollCtx.fillRect(w - 7, y - 3, 4, 6);
   }
 
   for (let j = rollNotes.length - 1; j >= 0; j--) {
     const n = rollNotes[j];
-    n.t += 0.02;
-    const laneY = n.stage * laneH + laneH / 2;
-    const radius = 9 - n.t * 6;
-    if (radius <= 0) {
+    n.t += 0.016;
+    const alpha = 1 - n.t * 0.5;
+    if (alpha <= 0) {
       rollNotes.splice(j, 1);
       continue;
     }
-    rollCtx.fillStyle = STAGE_COLORS[n.stage];
-    rollCtx.globalAlpha = Math.max(0, 1 - n.t * 1.5);
-    rollCtx.beginPath();
-    rollCtx.arc(n.x, laneY, Math.max(radius, 1), 0, Math.PI * 2);
-    rollCtx.fill();
-    rollCtx.globalAlpha = 1;
+    drawEighthNote(n.x, staffY(n.stage, h), STAGE_COLORS[n.stage], alpha, n.letter);
   }
   requestAnimationFrame(drawRoll);
 }
@@ -407,8 +451,9 @@ async function playStage(index, result, isFail, seq) {
     const spacing = Math.max(110, Math.min(210, 5200 / n));
     for (let k = 0; k < tokens.length; k++) {
       if (seq !== runSeq) return;
-      sound.triangle(scale[k % scale.length]);
-      pushRoll(index);
+      const lexNote = scale[k % scale.length];
+      sound.triangle(lexNote);
+      pushRoll(index, lexNote);
       highlightToken(tokens[k]);
       popSourceNote(tokens[k]);
       await wait(spacing);
@@ -418,15 +463,16 @@ async function playStage(index, result, isFail, seq) {
     for (const note of ["C3", "G3", "C4"]) {
       if (seq !== runSeq) return;
       sound.pluck(note);
-      pushRoll(index);
+      pushRoll(index, note);
       await wait(150);
     }
     await wait(140);
   } else if (key === "scope") {
-    sound.pad(["A2", "E3", "A3", "C4"]);
+    const chord = ["A2", "E3", "A3", "C4"];
+    sound.pad(chord);
     for (let k = 0; k < 3; k++) {
       if (seq !== runSeq) return;
-      pushRoll(index);
+      pushRoll(index, chord[k]);
       await wait(90);
     }
     await wait(500);
@@ -434,7 +480,7 @@ async function playStage(index, result, isFail, seq) {
     for (const note of ["G4", "B4"]) {
       if (seq !== runSeq) return;
       sound.bell(note);
-      pushRoll(index);
+      pushRoll(index, note);
       await wait(230);
     }
     await wait(200);
@@ -443,8 +489,9 @@ async function playStage(index, result, isFail, seq) {
     const drums = ["C2", "G2", "C2", "E2", "G2", "C2"];
     for (let k = 0; k < lines; k++) {
       if (seq !== runSeq) return;
-      sound.membrane(drums[k % drums.length]);
-      pushRoll(index);
+      const drumNote = drums[k % drums.length];
+      sound.membrane(drumNote);
+      pushRoll(index, drumNote);
       await wait(160);
     }
     await wait(160);
