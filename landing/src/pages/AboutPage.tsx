@@ -75,20 +75,21 @@ export function AboutPage() {
               clean program builds up like a short symphony, and an error stops the orchestra
               mid-phrase at exactly the stage that failed.
             </p>
-            <blockquote className="about-callout">
-              <p>
-                <strong>Is it a real, new language?</strong> Yes — Klang is implemented entirely
-                from scratch: its own lexer, recursive-descent parser, scope resolver, semantic
-                checker, and tree-walking interpreter, written in dependency-free JavaScript (see{' '}
-                <code>src/</code>). No Python runs anywhere. Klang has its own{' '}
-                <em>music-themed</em> keywords — you write <code>motif</code> for a function,{' '}
-                <code>ensemble</code> for a class, <code>play</code> to output,{' '}
-                <code>when / orwhen / otherwise</code> for conditionals,{' '}
-                <code>loop … in scale(...)</code> and <code>sustain</code> for loops. The grammar,
-                token set, scoping rules, and gradual type system are Klang&apos;s own, specified
-                in <code>docs/LANGUAGE_DESIGN.md</code>.
-              </p>
-            </blockquote>
+            <h3 className="about-subhead">A language of its own</h3>
+            <p>
+              Klang is implemented entirely from scratch: its own lexer, recursive-descent
+              parser, scope resolver, semantic checker, and tree-walking interpreter, written in
+              dependency-free JavaScript (see <code>src/</code>). No Python runs anywhere. The
+              grammar, token set, scoping rules, and gradual type system are Klang&apos;s own,
+              specified in <code>docs/LANGUAGE_DESIGN.md</code>.
+            </p>
+            <p>
+              The surface syntax is music-themed. You write <code>motif</code> for a function,{' '}
+              <code>ensemble</code> for a class, <code>play</code> to output,{' '}
+              <code>when</code> / <code>orwhen</code> / <code>otherwise</code> for conditionals,{' '}
+              <code>loop … in scale(...)</code> and <code>sustain</code> for loops — each keyword
+              a performance direction rather than a borrowed dialect.
+            </p>
           </Section>
 
           <Section id="stages" title="The five stages (and their instruments)">
