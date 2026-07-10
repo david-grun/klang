@@ -1,0 +1,96 @@
+# canon.klang — a concert program for Pachelbel's Canon
+# The web shell plays an orchestral arrangement as this compiles.
+
+ensemble Orchestra:
+    motif tune(self, hall):
+        self._hall = hall
+        self._voices = 0
+
+    motif seat(self):
+        self._voices = self._voices + 1
+        resolve self._voices
+
+    motif hall(self):
+        resolve self._hall
+
+motif announce(title):
+    play(title)
+
+motif bar(n):
+    play("bar " + str(n))
+
+motif section(name, bars):
+    play(name)
+    loop i in scale(1, bars + 1):
+        bar(i)
+
+motif continuo():
+    play("ground: D A B F#")
+    play("ground: G D G A")
+
+motif violin_theme():
+    play("violin I enters — canon subject")
+    play("D4 F#4 A4 D5")
+    play("A4 B4 C#5 D5")
+
+motif viola_answer():
+    play("viola answers a bar late")
+    play("inner voice fills the thirds")
+
+motif cello_bass():
+    play("cello walks the ground bass")
+    play("D3 A2 B2 F#2 G2 D2 G2 A2")
+
+motif cadence():
+    play("final cadence — D major")
+    play("the house is still")
+
+motif canon(voices):
+    when voices <= 0:
+        play("empty pit — no voices seated")
+        resolve
+    when voices == 1:
+        violin_theme()
+        resolve
+    when voices == 2:
+        violin_theme()
+        viola_answer()
+        resolve
+    when voices == 3:
+        violin_theme()
+        viola_answer()
+        cello_bass()
+        resolve
+    violin_theme()
+    viola_answer()
+    cello_bass()
+    continuo()
+    cadence()
+
+motif program_note():
+    play("Klang Hall — evening program")
+    play("Johann Pachelbel — Canon")
+    play("arranged for the compiler orchestra")
+    play("each pipeline stage seats one voice")
+
+# ---- curtain up ----------------------------------------------------------
+
+house = Orchestra("Klang Hall")
+program_note()
+
+play("seating the pit")
+loop seat in scale(1, 5):
+    n = house.seat()
+    play("voice " + str(n) + " seated")
+
+play("hall: " + house.hall())
+continuo()
+section("exposition", 4)
+canon(4)
+section("development", 3)
+canon(3)
+section("recapitulation", 2)
+canon(2)
+cadence()
+
+play("end of program — applause")

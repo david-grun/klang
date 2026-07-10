@@ -8,7 +8,7 @@
 //   parser   -> plucked string       (Karplus-Strong)
 //   scope    -> soft pad             (slow detuned chord)
 //   semantic -> bell / FM            (inharmonic FM tone)
-//   execute  -> percussive membrane  (pitched drum, one hit per output line)
+//   execute  -> percussive membrane  (pitched drum, one hit per play/print)
 
 const NOTE_FREQUENCIES = new Map();
 const CHROMA = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -279,4 +279,228 @@ export class KlangSound {
     setTimeout(() => this.bell("C6", 0.06), 140);
     void t;
   }
+
+  // violin I — bright singing lead (duration in seconds)
+  violin(note, velocity = 0.085, duration = 0.42) {
+    if (!this._ready()) return;
+    const ctx = this.context;
+    const when = ctx.currentTime + 0.005;
+    const f = freq(note);
+    const dur = Math.max(0.12, duration);
+    const osc = ctx.createOscillator();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(f, when);
+    const shimmer = ctx.createOscillator();
+    shimmer.type = "sine";
+    shimmer.frequency.setValueAtTime(f * 2, when);
+    const shimmerGain = ctx.createGain();
+    shimmerGain.gain.value = velocity * 0.18;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(velocity, when + 0.02);
+    g.gain.exponentialRampToValueAtTime(velocity * 0.55, when + Math.min(0.2, dur * 0.35));
+    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    const tone = ctx.createBiquadFilter();
+    tone.type = "lowpass";
+    tone.frequency.value = Math.min(4200, f * 6);
+    osc.connect(g);
+    shimmer.connect(shimmerGain).connect(g);
+    g.connect(tone).connect(this.master);
+    osc.start(when);
+    shimmer.start(when);
+    osc.stop(when + dur + 0.05);
+    shimmer.stop(when + dur + 0.05);
+  }
+
+  // viola — softer mid voice
+  viola(note, velocity = 0.06, duration = 0.5) {
+    if (!this._ready()) return;
+    const ctx = this.context;
+    const when = ctx.currentTime + 0.008;
+    const f = freq(note);
+    const dur = Math.max(0.12, duration);
+    const osc = ctx.createOscillator();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(f, when);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.linearRampToValueAtTime(velocity, when + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    const tone = ctx.createBiquadFilter();
+    tone.type = "lowpass";
+    tone.frequency.value = Math.min(2400, f * 4);
+    osc.connect(g).connect(tone).connect(this.master);
+    osc.start(when);
+    osc.stop(when + dur + 0.05);
+  }
+
+  // cello — warm low bowed/plucked hybrid on the ground bass
+  cello(note, velocity = 0.14, duration = 0.55) {
+    if (!this._ready()) return;
+    const ctx = this.context;
+    const when = ctx.currentTime + 0.005;
+    const f = Math.max(freq(note), 55);
+    const dur = Math.max(0.12, duration);
+    const osc = ctx.createOscillator();
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(f, when);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, when);
+    g.gain.exponentialRampToValueAtTime(velocity, when + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+    const tone = ctx.createBiquadFilter();
+    tone.type = "lowpass";
+    tone.frequency.value = Math.min(900, f * 3.5);
+    osc.connect(g).connect(tone).connect(this.master);
+    osc.start(when);
+    osc.stop(when + dur + 0.05);
+  }
+
+  // continuo — soft organ-like chord under the canon
+  continuo(notes, velocity = 0.035) {
+    this.pad(notes, velocity);
+  }
+
+  // double bass / timpani-ish hit for execute stage
+  bass(note, velocity = 0.11) {
+    if (!this._ready()) return;
+    const ctx = this.context;
+    const when = ctx.currentTime + 0.005;
+    const f = freq(note);
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(f * 2.2, when);
+    osc.frequency.exponentialRampToValueAtTime(f, when + 0.1);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(velocity, when);
+    g.gain.exponentialRampToValueAtTime(0.0001, when + 0.45);
+    osc.connect(g).connect(this.master);
+    osc.start(when);
+    osc.stop(when + 0.5);
+  }
+
+  // closing D-major cadence for a clean Canon run
+  canonCadence() {
+    if (!this._ready()) return;
+    const beats = [
+      ["D3", "A3", "D4", "F#4"],
+      ["A2", "A3", "C#4", "E4"],
+      ["D3", "A3", "D4", "F#4"],
+      ["D3", "A3", "D4", "A4"],
+    ];
+    beats.forEach((chord, i) => {
+      setTimeout(() => {
+        this.continuo(chord, 0.04);
+        this.violin(chord[chord.length - 1], 0.07);
+      }, i * 220);
+    });
+  }
+
+  // triumphant C-major close for Ode to Joy
+  odeCadence() {
+    if (!this._ready()) return;
+    const beats = [
+      ["C3", "G3", "C4", "E4"],
+      ["G2", "G3", "B3", "D4"],
+      ["C3", "G3", "C4", "E4"],
+      ["C3", "G3", "C4", "G4"],
+    ];
+    beats.forEach((chord, i) => {
+      setTimeout(() => {
+        this.continuo(chord, 0.045);
+        this.violin(chord[chord.length - 1], 0.08);
+        if (i === beats.length - 1) this.bass("C2", 0.1);
+      }, i * 240);
+    });
+  }
 }
+
+/** Pachelbel Canon score fragments (D major, simplified). */
+export const CANON_SCORE = {
+  // classic ground: D A B F# | G D G A
+  bass: ["D3", "A2", "B2", "F#2", "G2", "D2", "G2", "A2"],
+  // opening violin subject (recognizable rising figures)
+  melody: [
+    "F#5", "E5", "D5", "C#5", "B4", "A4", "B4", "C#5",
+    "D5", "C#5", "B4", "A4", "G4", "F#4", "G4", "E4",
+    "D4", "F#4", "A4", "G4", "F#4", "D4", "F#4", "A4",
+    "B4", "A4", "G4", "F#4", "E4", "D4", "E4", "C#4",
+  ],
+  // viola fills — thirds below the subject
+  inner: [
+    "D4", "C#4", "B3", "A3", "G3", "F#3", "G3", "A3",
+    "B3", "A3", "G3", "F#3", "E3", "D3", "E3", "C#3",
+  ],
+  // continuo chord loop matching the ground
+  chords: [
+    ["D3", "A3", "D4", "F#4"],
+    ["A2", "E3", "A3", "C#4"],
+    ["B2", "F#3", "B3", "D4"],
+    ["F#2", "C#3", "F#3", "A3"],
+    ["G2", "D3", "G3", "B3"],
+    ["D2", "A2", "D3", "F#3"],
+    ["G2", "D3", "G3", "B3"],
+    ["A2", "E3", "A3", "C#4"],
+  ],
+};
+
+/**
+ * Beethoven Ode to Joy — C major hymn with beat lengths.
+ * beats: 1 = quarter, 2 = half. Steady pulse makes the tune recognizable.
+ */
+export const ODE_SCORE = {
+  // ms per quarter-note beat (~92 bpm — singable hymn tempo)
+  beatMs: 320,
+  // classic hymn: E E F G | G F E D | C C D E | E D D— | (repeat with C— close)
+  melody: [
+    { note: "E4", beats: 1 }, { note: "E4", beats: 1 }, { note: "F4", beats: 1 }, { note: "G4", beats: 1 },
+    { note: "G4", beats: 1 }, { note: "F4", beats: 1 }, { note: "E4", beats: 1 }, { note: "D4", beats: 1 },
+    { note: "C4", beats: 1 }, { note: "C4", beats: 1 }, { note: "D4", beats: 1 }, { note: "E4", beats: 1 },
+    { note: "E4", beats: 1.5 }, { note: "D4", beats: 0.5 }, { note: "D4", beats: 2 },
+    { note: "E4", beats: 1 }, { note: "E4", beats: 1 }, { note: "F4", beats: 1 }, { note: "G4", beats: 1 },
+    { note: "G4", beats: 1 }, { note: "F4", beats: 1 }, { note: "E4", beats: 1 }, { note: "D4", beats: 1 },
+    { note: "C4", beats: 1 }, { note: "C4", beats: 1 }, { note: "D4", beats: 1 }, { note: "E4", beats: 1 },
+    { note: "D4", beats: 1.5 }, { note: "C4", beats: 0.5 }, { note: "C4", beats: 2 },
+  ],
+  // one bass note per bar (half notes under the hymn)
+  bass: [
+    { note: "C3", beats: 2 }, { note: "G2", beats: 2 },
+    { note: "A2", beats: 2 }, { note: "E2", beats: 2 },
+    { note: "F2", beats: 2 }, { note: "C3", beats: 2 },
+    { note: "G2", beats: 2 }, { note: "C3", beats: 2 },
+    { note: "C3", beats: 2 }, { note: "G2", beats: 2 },
+    { note: "A2", beats: 2 }, { note: "E2", beats: 2 },
+    { note: "F2", beats: 2 }, { note: "C3", beats: 2 },
+    { note: "G2", beats: 2 }, { note: "C2", beats: 2 },
+  ],
+  // thirds below the melody (same rhythm)
+  inner: [
+    { note: "C4", beats: 1 }, { note: "C4", beats: 1 }, { note: "D4", beats: 1 }, { note: "E4", beats: 1 },
+    { note: "E4", beats: 1 }, { note: "D4", beats: 1 }, { note: "C4", beats: 1 }, { note: "B3", beats: 1 },
+    { note: "A3", beats: 1 }, { note: "A3", beats: 1 }, { note: "B3", beats: 1 }, { note: "C4", beats: 1 },
+    { note: "C4", beats: 1.5 }, { note: "B3", beats: 0.5 }, { note: "B3", beats: 2 },
+    { note: "C4", beats: 1 }, { note: "C4", beats: 1 }, { note: "D4", beats: 1 }, { note: "E4", beats: 1 },
+    { note: "E4", beats: 1 }, { note: "D4", beats: 1 }, { note: "C4", beats: 1 }, { note: "B3", beats: 1 },
+    { note: "A3", beats: 1 }, { note: "A3", beats: 1 }, { note: "B3", beats: 1 }, { note: "C4", beats: 1 },
+    { note: "B3", beats: 1.5 }, { note: "A3", beats: 0.5 }, { note: "A3", beats: 2 },
+  ],
+  // one chord per bar
+  chords: [
+    { notes: ["C3", "G3", "C4", "E4"], beats: 2 },
+    { notes: ["G2", "D3", "G3", "B3"], beats: 2 },
+    { notes: ["A2", "E3", "A3", "C4"], beats: 2 },
+    { notes: ["E2", "B2", "E3", "G3"], beats: 2 },
+    { notes: ["F2", "C3", "F3", "A3"], beats: 2 },
+    { notes: ["C3", "G3", "C4", "E4"], beats: 2 },
+    { notes: ["G2", "D3", "G3", "B3"], beats: 2 },
+    { notes: ["C3", "G3", "C4", "E4"], beats: 2 },
+    { notes: ["C3", "G3", "C4", "E4"], beats: 2 },
+    { notes: ["G2", "D3", "G3", "B3"], beats: 2 },
+    { notes: ["A2", "E3", "A3", "C4"], beats: 2 },
+    { notes: ["E2", "B2", "E3", "G3"], beats: 2 },
+    { notes: ["F2", "C3", "F3", "A3"], beats: 2 },
+    { notes: ["C3", "G3", "C4", "E4"], beats: 2 },
+    { notes: ["G2", "D3", "G3", "B3"], beats: 2 },
+    { notes: ["C3", "G3", "C4", "C5"], beats: 2 },
+  ],
+};

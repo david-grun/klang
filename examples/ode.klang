@@ -1,0 +1,102 @@
+# ode.klang — a concert program for Beethoven's Ode to Joy
+# The web shell plays an orchestral arrangement as this compiles.
+
+ensemble Hall:
+    motif tune(self, name):
+        self._name = name
+        self._chorus = 0
+
+    motif seat_chorus(self):
+        self._chorus = self._chorus + 1
+        resolve self._chorus
+
+    motif name(self):
+        resolve self._name
+
+motif announce(line):
+    play(line)
+
+motif bar(n):
+    play("bar " + str(n))
+
+motif movement(title, bars):
+    play(title)
+    loop i in scale(1, bars + 1):
+        bar(i)
+
+motif hymn_theme():
+    play("Ode to Joy — hymn theme")
+    play("E4 E4 F4 G4")
+    play("G4 F4 E4 D4")
+    play("C4 C4 D4 E4")
+    play("E4 D4 D4")
+
+motif hymn_answer():
+    play("second phrase — rising answer")
+    play("D4 D4 E4 C4")
+    play("D4 E4 F4 E4")
+    play("D4 C4 D4")
+
+motif bass_walk():
+    play("bass walks the tonic and dominant")
+    play("C3 G2 A2 F2")
+    play("C3 G2 C3 G2")
+
+motif chorus_swell():
+    play("full chorus — Freude, schöner Götterfunken")
+    play("the hall answers in unison")
+
+motif coda():
+    play("coda — triumphant close")
+    play("C major cadence")
+    play("the Ninth is still ringing")
+
+motif ode(voices):
+    when voices <= 0:
+        play("empty hall — no chorus")
+        resolve
+    when voices == 1:
+        hymn_theme()
+        resolve
+    when voices == 2:
+        hymn_theme()
+        hymn_answer()
+        resolve
+    when voices == 3:
+        hymn_theme()
+        hymn_answer()
+        bass_walk()
+        resolve
+    hymn_theme()
+    hymn_answer()
+    bass_walk()
+    chorus_swell()
+    coda()
+
+motif program_note():
+    play("Klang Hall — evening program")
+    play("Ludwig van Beethoven — Symphony No. 9")
+    play("Ode to Joy — arranged for the compiler orchestra")
+    play("each pipeline stage seats another voice")
+
+# ---- curtain up ----------------------------------------------------------
+
+house = Hall("Klang Hall")
+program_note()
+
+play("seating the chorus")
+loop seat in scale(1, 5):
+    n = house.seat_chorus()
+    play("chorus voice " + str(n) + " seated")
+
+play("hall: " + house.name())
+bass_walk()
+movement("allegro assai — exposition", 4)
+ode(4)
+movement("development — the theme returns", 3)
+ode(3)
+movement("recapitulation", 2)
+ode(2)
+coda()
+
+play("end of program — standing ovation")

@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "node build-site.js",
-    "dev": "node dev-server.js",
+    "dev": "npm run dev --prefix landing",
+    "dev:play": "node dev-server.js",
     "check": "node test.js",
     "test": "node test.js"
   },

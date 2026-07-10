@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Klang — stage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+      (function () {
+        try {
+          var walked = sessionStorage.getItem("klang-walked-in") === "1";
+          var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (!walked && !reduce) document.documentElement.classList.add("walk-pending");
+        } catch (e) { /* private mode */ }
+      })();
+    </script>
+  </head>
+  <body class="stage-page">
+
+    <!-- Full-bleed theater header (outside the workbench shell) -->
+    <header class="scene" id="scene" aria-label="Orchestra stage">
+      <div class="valance" aria-hidden="true"></div>
+      <div class="curtain curtain-left" aria-hidden="true"></div>
+      <div class="curtain curtain-right" aria-hidden="true"></div>
+
+      <div class="backdrop" aria-hidden="true"></div>
+      <div class="arch" aria-hidden="true"></div>
+
+      <div class="scene-inner" id="sceneInner">
+        <div class="scene-title">
+          <span class="scene-kicker">a compiler you can hear</span>
+          <h1>Klang</h1>
+          <p>Watch source become sound — one instrument joins for each stage of the pipeline.</p>
+        </div>
+
+        <div class="spotlight spotlight-left" aria-hidden="true"></div>
+        <div class="spotlight spotlight-right" aria-hidden="true"></div>
+        <div class="stage-floor" aria-hidden="true"></div>
+        <div class="carpet" aria-hidden="true"></div>
+        <div class="orchestra" aria-hidden="true">
+          <div class="performer violinist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="legs"></div>
+            <div class="violin"></div>
+            <div class="bow"></div>
+          </div>
+          <div class="performer cellist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="skirt"></div>
+            <div class="cello-neck"></div>
+            <div class="cello-body"></div>
+            <div class="bow"></div>
+          </div>
+          <div class="performer conductor">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="baton-arm"></div>
+            <div class="podium"></div>
+          </div>
+          <div class="performer hornist">
+            <div class="hair"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="legs"></div>
+            <div class="arm"></div>
+            <div class="horn"></div>
+          </div>
+        </div>
+
+        <div class="scene-notes" id="sceneNotes" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <div class="shell">
+      <div class="toolbar">
+        <div class="brand">
+          <a class="brand-home" href="/" title="Back to the house">← House</a>
+          <span class="brand-mark">K</span>
+          <span class="brand-name">Klang</span>
+          <span class="brand-file" id="brandFile">hello.klang</span>
+        </div>
+        <div class="toolbar-actions">
+          <label class="sample-picker">
+            <span>Example</span>
+            <select id="sampleSelect"></select>
+          </label>
+          <label class="sound-toggle">
+            <input id="soundToggle" type="checkbox" checked>
+            <span id="soundStatus">Sound</span>
+          </label>
+          <a class="btn" href="/about">About</a>
+          <button id="resetButton" type="button" class="btn">Reset</button>
+          <button id="runButton" type="button" class="btn primary">▶ Run</button>
+        </div>
+      </div>
+
+      <!-- Pipeline as a horizontal progress strip under the toolbar -->
+      <section class="pipeline-strip" aria-label="Pipeline">
+        <p class="section-label">Pipeline — five stages of the run</p>
+        <div id="pipelineList" class="pipeline-track"></div>
+      </section>
+
+      <div class="workbench">
+        <section class="panel panel-ide" aria-label="IDE">
+          <header class="panel-head">
+            <h2 class="panel-title">Score</h2>
+            <p class="panel-sub">Write Klang here</p>
+          </header>
+          <div class="panel-body">
+            <div class="editor">
+              <div class="gutter" id="gutter">1</div>
+              <div class="code-wrap">
+                <pre class="code-highlight" id="codeHighlight" aria-hidden="true"></pre>
+                <textarea id="sourceInput" spellcheck="false" autocomplete="off"
+                          autocapitalize="off" aria-label="Klang source"></textarea>
+                <div class="source-note-layer" id="sourceNotes" aria-hidden="true"></div>
+              </div>
+            </div>
+            <div class="error-banner" id="errorBanner">
+              <span id="errorText"></span>
+            </div>
+          </div>
+        </section>
+
+        <div class="workbench-side">
+          <section class="panel panel-symphony" aria-label="Symphony">
+            <header class="panel-head">
+              <h2 class="panel-title">Symphony</h2>
+              <p class="panel-sub">One instrument per pipeline stage</p>
+            </header>
+            <div class="panel-body">
+              <div class="roll-wrap">
+                <span class="clef" aria-hidden="true">&#119070;</span>
+                <canvas id="roll"></canvas>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel panel-console" aria-label="Playbill">
+            <header class="panel-head">
+              <h2 class="panel-title">Playbill</h2>
+              <p class="panel-sub">Program notes</p>
+            </header>
+            <div class="panel-body">
+              <div id="consoleOut" class="console playbill is-muted" role="log" aria-live="polite">
+                <p class="cue cue-empty">Press Run to hear the pipeline.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <details class="panel panel-artifacts" id="artifactsPanel">
+        <summary class="artifacts-summary">
+          <span class="panel-title">Details</span>
+          <span class="panel-sub">Tokens · AST · Scope</span>
+        </summary>
+        <div class="panel-body artifacts-body">
+          <div class="artifact-tabs" role="tablist" aria-label="Stage artifacts">
+            <button type="button" class="artifact-tab is-active" data-artifact="tokens" role="tab" aria-selected="true">Tokens</button>
+            <button type="button" class="artifact-tab" data-artifact="ast" role="tab" aria-selected="false">AST</button>
+            <button type="button" class="artifact-tab" data-artifact="scope" role="tab" aria-selected="false">Scope</button>
+          </div>
+          <pre class="artifact-out is-muted" id="artifactOut" role="tabpanel">Run a program to inspect stage artifacts.</pre>
+        </div>
+      </details>
+
+      <section class="panel panel-instruments" aria-label="Instruments">
+        <header class="panel-head">
+          <h2 class="panel-title">Instruments</h2>
+          <p class="panel-sub">One voice per stage</p>
+        </header>
+        <div class="panel-body instruments-body">
+          <div id="legendList" class="instruments-track"></div>
+          <p class="hint">
+            Stages join as they pass; an error cuts the rest mid-phrase.
+          </p>
+        </div>
+      </section>
+
+      <footer class="site-foot">
+        <span>Klang · a tiny language whose compiler performs on stage</span>
+        <span>
+          <a href="/">House</a> ·
+          <a href="/about">About</a> ·
+          <a href="https://github.com/david-grun/klang" target="_blank" rel="noopener">GitHub ↗</a>
+        </span>
+      </footer>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

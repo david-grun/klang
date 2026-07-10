@@ -37,8 +37,10 @@ export class Interpreter {
     const self = this;
     const builtin = (name, fn) => this.global.define(name, { t: "builtin", name, fn });
 
-    builtin("print", (args) => {
-      self.output.push(args.map(reprString).join(" "));
+    builtin("print", (args, line) => {
+      const text = args.map(reprString).join(" ");
+      self.output.push(text);
+      self.event({ kind: "print", line, text });
       return NONE;
     });
     builtin("length", (args, line) => {

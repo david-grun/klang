@@ -1,57 +1,63 @@
-/* Klang — pixel-art dawn showcase.
-   Soft pastel palette drawn from the scene: pale lilac sky, coral sun,
-   cherry-blossom pink, blue-gray skyline, plum branch, teal bird. */
+/* Klang — warm walnut concert hall (velvet curtains, amber lamps). */
 
 :root {
-  --bg: #c8b58c;
-  --panel: #f7eed9;
-  --panel-2: #efe3c9;
-  --panel-3: #e6d7b6;
-  --border: #dccaa4;
-  --border-strong: #c6b083;
-  --text-primary: #3c2c1b;
-  --text-secondary: #6e5b43;
-  --text-muted: #9a866a;
+  --house: #1c1410;
+  --house-deep: #140e0b;
+  --bg: var(--house-deep);
+  --panel: #2a1f18;
+  --panel-2: #33261e;
+  --panel-3: #3d2e24;
+  --border: rgba(212, 168, 96, 0.22);
+  --border-strong: rgba(212, 168, 96, 0.42);
+  --text-primary: #f5ead8;
+  --text-secondary: #d4b896;
+  --text-muted: #9a7f62;
 
-  --danger-bg: #f7e2d6;
-  --danger-border: #e2b19a;
-  --danger-text: #b0402c;
-  --success-text: #3f8a5c;
+  --danger-bg: #3a1c18;
+  --danger-border: #7a3a30;
+  --danger-text: #f0b0a0;
+  --success-text: #8ecf9e;
 
   /* theater backdrop */
-  --wall-top: #efe6cf;
-  --wall-bottom: #e2d4b2;
+  --wall-top: #2a1c16;
+  --wall-bottom: #1a120e;
 
   /* theater proscenium + stage */
-  --curtain: #b23636;
-  --curtain-dark: #8e2727;
-  --curtain-edge: #6d1c1c;
-  --tieback: #d9a441;
-  --floor: #9a6738;
-  --floor-dark: #7a4f28;
-  --floor-edge: #5f3d1e;
-  --arch: #e0c88a;
-  --arch-dark: #c7ab68;
-  --carpet: #a3312f;
-  --carpet-dark: #832826;
+  --curtain: #7a242c;
+  --curtain-dark: #5a181e;
+  --curtain-edge: #3a0e12;
+  --velvet: #5a181e;
+  --velvet-mid: #7a242c;
+  --velvet-dark: #3a0e12;
+  --tieback: #e0b060;
+  --floor: #3a2818;
+  --floor-dark: #2a1c10;
+  --floor-edge: #4a3220;
+  --arch: #e0b060;
+  --arch-dark: #b88840;
+  --carpet: #6a2024;
+  --carpet-dark: #4a1418;
 
   /* performers */
   --skin: #f1c8ab;
   --skin-2: #9c6a44;
   --wig: #f4f0ea;
-  --coat: #2c2942;
-  --coat-2: #363258;
+  --coat: #1e1a2e;
+  --coat-2: #2a2640;
   --stocking: #ece7dd;
-  --gold: #d9a441;
+  --gold: #e0b060;
+  --gold-bright: #f0c878;
+  --gold-dim: #b88840;
+  --cream: #f5ead8;
   --cello: #8a5a35;
   --cello-dark: #6f4628;
 
-  /* token colours (warm, for the cream editor) */
-  --c-keyword: #b23636;
-  --c-identifier: #2f8069;
-  --c-operator: #c06a17;
-  --c-literal: #9c3d6a;
-  --c-comment: #a08a68;
+  /* token colours (warm dark editor) */
+  --c-keyword: #e8a090;
+  --c-identifier: #7ec9b0;
+  --c-operator: #e0b070;
+  --c-literal: #d4a0c0;
+  --c-comment: #9a7f62;
 
   /* one hue per pipeline stage */
   --stage-lexer: #c0453a;
@@ -61,11 +67,14 @@
   --stage-execute: #7a4e9a;
 
   /* tracker highlight sweeping through the source */
-  --tracker: rgba(217, 164, 65, 0.6);
+  --tracker: rgba(212, 176, 106, 0.45);
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
-  --font-pixel: "Press Start 2P", "Courier New", monospace;
+  --font-ui: var(--font-sans);
+  /* alias for any leftover references */
+  --font-pixel: var(--font-ui);
 }
 
 * { box-sizing: border-box; }
@@ -76,8 +85,9 @@ body {
   margin: 0;
   padding: 28px 16px 48px;
   background:
-    radial-gradient(1200px 400px at 50% -140px, #d8c69c 0%, var(--bg) 60%),
-    var(--bg);
+    radial-gradient(900px 480px at 50% -60px, rgba(180, 110, 50, 0.22) 0%, transparent 55%),
+    radial-gradient(700px 400px at 20% 10%, rgba(90, 24, 30, 0.35) 0%, transparent 50%),
+    var(--house-deep);
   font-family: var(--font-sans);
   color: var(--text-primary);
   display: flex;
@@ -86,90 +96,199 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Play page: full-bleed house, scene as true header */
+body.stage-page {
+  display: block;
+  padding: 0;
+  background:
+    radial-gradient(1100px 520px at 50% 0%, rgba(200, 130, 60, 0.2) 0%, transparent 48%),
+    radial-gradient(800px 420px at 80% 8%, rgba(90, 24, 30, 0.28) 0%, transparent 45%),
+    var(--house-deep);
+}
+
 .app {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1040px;
   background: var(--panel);
-  border: 2px solid var(--border-strong);
-  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 24px 60px -30px rgba(70, 45, 20, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(212, 176, 106, 0.08),
+    0 28px 80px -28px rgba(0, 0, 0, 0.75);
+}
+
+.shell {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+/* Play page: workbench matches the full-bleed scene */
+body.stage-page .shell {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 28px 48px;
+  box-sizing: border-box;
+}
+
+body.stage-page .scene {
+  width: 100%;
+  max-width: none;
+  height: clamp(280px, 32vw, 380px);
+  border-bottom: 1px solid var(--border-strong);
 }
 
 /* ---------------------------------------------------------------- scene */
 
 .scene {
   position: relative;
-  height: clamp(320px, 40vw, 420px);
+  height: clamp(300px, 38vw, 400px);
   overflow: hidden;
   background:
-    radial-gradient(560px 360px at 50% 0%, rgba(255, 244, 214, 0.7) 0%, rgba(255, 244, 214, 0) 62%),
-    linear-gradient(180deg, var(--wall-top) 0%, var(--wall-bottom) 100%);
-  image-rendering: pixelated;
+    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(232, 180, 100, 0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, #2a1810 0%, transparent 55%),
+    linear-gradient(180deg, #221610 0%, var(--house) 45%, #120c09 100%);
 }
 
-/* gold proscenium arch framing the stage opening */
+/* slim gold proscenium */
 .arch {
   position: absolute;
-  left: 13%; right: 13%; top: 12px; bottom: 40px;
+  left: 12%; right: 12%; top: 18px; bottom: 48px;
   z-index: 5;
-  border: 11px solid var(--arch);
+  border: 2px solid var(--gold-dim);
   border-bottom: none;
-  border-radius: 60px 60px 0 0;
-  box-shadow: inset 0 0 0 2px var(--arch-dark);
+  border-radius: 10px 10px 0 0;
+  box-shadow:
+    inset 0 0 0 1px rgba(212, 176, 106, 0.2),
+    0 0 32px rgba(0, 0, 0, 0.4);
   pointer-events: none;
 }
 
-/* pleated cream backdrop drapes behind the orchestra */
-.backdrop {
+.arch::before {
+  content: "";
   position: absolute;
-  left: 15%; right: 15%; top: 26px; bottom: 62px;
-  z-index: 0;
-  background: repeating-linear-gradient(90deg, #f2ead4 0 13px, #e6d9b8 13px 19px);
-  border-radius: 48px 48px 0 0;
+  left: 10%;
+  right: 10%;
+  top: -2px;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
 }
 
-/* proscenium: a light-palette valance + side curtains frame the stage. */
+/* dark stage opening behind the orchestra */
+.backdrop {
+  position: absolute;
+  left: 14%; right: 14%; top: 28px; bottom: 58px;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(40, 22, 26, 0.9) 0%, transparent 70%),
+    linear-gradient(180deg, #1a1014 0%, #0e0a0b 100%);
+  border-radius: 8px 8px 0 0;
+}
+
 .valance {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 34px;
+  height: 28px;
   z-index: 6;
-  background: repeating-linear-gradient(90deg, var(--curtain) 0 12px, var(--curtain-dark) 12px 24px);
-  border-bottom: 3px solid var(--curtain-edge);
+  background: linear-gradient(180deg, var(--velvet-dark), var(--velvet));
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
 }
-/* scalloped hem under the valance */
+
 .valance::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: -13px;
-  height: 13px;
-  background:
-    radial-gradient(circle at 12px -3px, var(--curtain-dark) 12px, transparent 13px) 0 0 / 24px 13px repeat-x;
+  content: none;
 }
+
+.scene-inner {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform-origin: center 58%;
+  transition:
+    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1.4s ease;
+}
+
 .curtain {
   position: absolute;
   top: 0;
-  width: clamp(64px, 9vw, 110px);
+  width: clamp(72px, 11vw, 130px);
   height: 100%;
   z-index: 6;
-  background: repeating-linear-gradient(90deg, var(--curtain) 0 12px, var(--curtain-dark) 12px 24px);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--velvet-dark) 0 14px,
+      var(--velvet) 14px 28px,
+      var(--velvet-mid) 28px 30px
+    );
+  transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
-.curtain-left { left: 0; border-right: 3px solid var(--curtain-edge); }
-.curtain-right { right: 0; border-left: 3px solid var(--curtain-edge); }
-/* gold tieback band */
+
+.curtain-left {
+  left: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow: inset -16px 0 28px rgba(0, 0, 0, 0.4);
+}
+
+.curtain-right {
+  right: 0;
+  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow: inset 16px 0 28px rgba(0, 0, 0, 0.4);
+}
+
 .curtain::after {
   content: "";
   position: absolute;
-  top: 58%;
+  top: 55%;
   width: 100%;
-  height: 14px;
-  background: var(--tieback);
-  border-top: 2px solid #b3822e;
-  border-bottom: 2px solid #b3822e;
+  height: 10px;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold-dim));
+  border-top: 1px solid rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  opacity: 0.85;
 }
 
-/* music notes drifting up from the orchestra pit */
+/* First-visit walk-in: curtains closed, stage approached from the house */
+html.walk-pending .curtain-left,
+html.walk-pending .curtain-right {
+  width: 52%;
+}
+html.walk-pending .curtain-left { transform: translateX(0); }
+html.walk-pending .curtain-right { transform: translateX(0); }
+html.walk-pending .scene-inner {
+  transform: scale(1.08);
+  filter: brightness(0.55);
+  opacity: 0.72;
+}
+
+html.walk-pending.walk-entered .curtain-left {
+  width: clamp(72px, 11vw, 130px);
+  transform: translateX(0);
+}
+html.walk-pending.walk-entered .curtain-right {
+  width: clamp(72px, 11vw, 130px);
+  transform: translateX(0);
+}
+html.walk-pending.walk-entered .scene-inner {
+  transform: scale(1);
+  filter: brightness(1);
+  opacity: 1;
+}
+
+/* Animate width + transform together when entering */
+html.walk-pending .curtain-left,
+html.walk-pending .curtain-right {
+  transition:
+    transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+    width 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .scene-notes { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 4; }
 .scene-note {
   position: absolute;
@@ -188,36 +307,40 @@ body {
 .scene-title {
   position: absolute;
   left: 50%;
-  top: 52px;
+  top: 48px;
   transform: translateX(-50%);
   z-index: 5;
   width: max-content;
   max-width: 62%;
   text-align: center;
-  text-shadow: 0 2px 12px rgba(255, 248, 228, 0.9);
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.7);
 }
 .scene-kicker {
-  font-family: var(--font-pixel);
-  font-size: 9px;
-  letter-spacing: 0.12em;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: var(--gold);
 }
 .scene-title h1 {
-  margin: 12px 0 10px;
-  font-family: var(--font-pixel);
-  font-size: clamp(26px, 4.6vw, 40px);
-  font-weight: 400;
+  margin: 10px 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 4rem);
+  font-weight: 500;
   letter-spacing: 0.02em;
-  color: var(--curtain-dark);
-  line-height: 1.1;
+  color: var(--cream);
+  line-height: 0.95;
 }
 .scene-title p {
   margin: 0 auto;
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-style: italic;
+  font-weight: 400;
   color: var(--text-secondary);
   max-width: 340px;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 /* ----------------------------------------------------- theater stage */
@@ -228,12 +351,11 @@ body {
   height: 64px;
   z-index: 2;
   background:
-    repeating-linear-gradient(90deg, rgba(60, 38, 18, 0.25) 0 2px, transparent 2px 46px),
-    linear-gradient(180deg, var(--floor) 0%, var(--floor-dark) 100%);
-  border-top: 3px solid var(--floor-edge);
+    repeating-linear-gradient(90deg, #4a3220 0 48px, #3a2818 48px 96px),
+    linear-gradient(180deg, transparent 0%, rgba(40, 24, 14, 0.55) 30%, #2a1c10 100%);
+  border-top: 1px solid rgba(224, 176, 96, 0.22);
 }
 
-/* red carpet runner under the orchestra */
 .carpet {
   position: absolute;
   left: 26%; right: 26%; bottom: 0;
@@ -241,6 +363,7 @@ body {
   z-index: 2;
   background: linear-gradient(180deg, var(--carpet) 0%, var(--carpet-dark) 100%);
   clip-path: polygon(14% 0, 86% 0, 100% 100%, 0% 100%);
+  opacity: 0.75;
 }
 
 .spotlight {
@@ -250,9 +373,14 @@ body {
   height: 100%;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(226, 214, 244, 0.20) 0%, rgba(226, 214, 244, 0.07) 74%, rgba(226, 214, 244, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(232, 201, 138, 0.16) 0%,
+    rgba(232, 201, 138, 0.05) 74%,
+    transparent 100%
+  );
   clip-path: polygon(44% 0, 56% 0, 100% 100%, 0% 100%);
-  opacity: 0.7;
+  opacity: 0.65;
   transition: opacity 0.4s;
 }
 .spotlight-left { left: 10%; transform: skewX(-6deg); }
@@ -268,17 +396,17 @@ body {
   align-items: flex-end;
   justify-content: center;
   gap: clamp(30px, 6vw, 70px);
+  pointer-events: none;
 }
 
 .performer {
   position: relative;
   width: 56px;
   height: 96px;
-  image-rendering: pixelated;
+  flex: 0 0 auto;
   transform: scale(1.25);
   transform-origin: bottom center;
 }
-/* powdered wig: crown block plus two side rolls */
 .performer .hair { position: absolute; width: 18px; height: 9px; background: var(--wig); border-radius: 3px 3px 0 0; z-index: 2; }
 .performer .hair::before, .performer .hair::after {
   content: "";
@@ -294,7 +422,6 @@ body {
 .performer .head { position: absolute; width: 16px; height: 16px; background: var(--skin); border-radius: 2px; animation: head-nod 2.8s ease-in-out infinite; }
 .performer .torso { position: absolute; border-radius: 4px 4px 0 0; }
 .performer .arm { position: absolute; background: var(--skin); border-radius: 2px; }
-/* white stockings */
 .performer .legs { position: absolute; bottom: 0; width: 22px; height: 13px; }
 .performer .legs::before, .performer .legs::after {
   content: "";
@@ -303,19 +430,18 @@ body {
   width: 6px;
   height: 13px;
   background: var(--stocking);
-  border-bottom: 4px solid #221d30; /* buckle shoes */
+  border-bottom: 4px solid #121018;
 }
 .performer .legs::before { left: 2px; }
 .performer .legs::after { right: 2px; }
 
-/* cellist, seated center like the reference */
 .cellist { width: 66px; }
 .cellist .hair { left: 25px; top: 4px; }
 .cellist .head { left: 26px; top: 10px; }
-.cellist .torso { left: 21px; top: 24px; width: 26px; height: 30px; background: var(--stocking); } /* white blouse */
+.cellist .torso { left: 21px; top: 24px; width: 26px; height: 30px; background: var(--stocking); }
 .cellist .skirt { position: absolute; left: 17px; top: 52px; width: 34px; height: 44px; background: var(--coat); border-radius: 4px 4px 0 0; }
 .cellist .cello-neck { position: absolute; left: 32px; top: 6px; width: 4px; height: 36px; background: var(--cello-dark); z-index: 3; }
-.cellist .cello-neck::before { content: ""; position: absolute; left: -2px; top: -5px; width: 8px; height: 6px; background: var(--cello-dark); border-radius: 2px; } /* scroll */
+.cellist .cello-neck::before { content: ""; position: absolute; left: -2px; top: -5px; width: 8px; height: 6px; background: var(--cello-dark); border-radius: 2px; }
 .cellist .cello-body {
   position: absolute;
   left: 19px; top: 38px;
@@ -324,8 +450,8 @@ body {
   background: var(--cello);
   border-radius: 46% 46% 44% 44%;
 }
-.cellist .cello-body::before { content: ""; position: absolute; left: 13px; top: 3px; width: 3px; height: 42px; background: #2a2339; } /* strings */
-.cellist .cello-body::after { content: ""; position: absolute; left: 12px; bottom: -9px; width: 4px; height: 9px; background: #2a2339; } /* endpin */
+.cellist .cello-body::before { content: ""; position: absolute; left: 13px; top: 3px; width: 3px; height: 42px; background: #1a1520; }
+.cellist .cello-body::after { content: ""; position: absolute; left: 12px; bottom: -9px; width: 4px; height: 9px; background: #1a1520; }
 .cellist .bow {
   position: absolute;
   left: 4px; top: 58px;
@@ -336,16 +462,14 @@ body {
   animation: bow-saw 1.6s ease-in-out infinite;
 }
 
-/* violinist */
 .violinist .hair { left: 19px; top: 8px; }
 .violinist .head { left: 20px; top: 14px; }
 .violinist .torso { left: 15px; top: 28px; width: 26px; height: 56px; background: var(--coat); }
-.violinist .torso::before { content: ""; position: absolute; top: 1px; left: 10px; width: 6px; height: 5px; background: #c23540; } /* red bow tie */
+.violinist .torso::before { content: ""; position: absolute; top: 1px; left: 10px; width: 6px; height: 5px; background: #c23540; }
 .violinist .legs { left: 17px; }
 .violinist .violin { position: absolute; left: 30px; top: 32px; width: 22px; height: 8px; background: var(--cello); border-radius: 2px; transform: rotate(-18deg); }
 .violinist .bow { position: absolute; left: 26px; top: 28px; width: 30px; height: 3px; background: #efe9ee; transform-origin: left center; animation: bow-saw 1.5s ease-in-out infinite; }
 
-/* hornist with a gold horn, like the reference */
 .hornist .hair { left: 19px; top: 8px; }
 .hornist .head { left: 20px; top: 14px; }
 .hornist .torso { left: 15px; top: 28px; width: 26px; height: 56px; background: var(--coat-2); }
@@ -361,9 +485,8 @@ body {
   transform-origin: left center;
   animation: horn-lift 3s ease-in-out infinite;
 }
-.hornist .horn::after { content: ""; position: absolute; right: -3px; top: -3px; width: 8px; height: 11px; background: var(--gold); border-radius: 2px; } /* bell */
+.hornist .horn::after { content: ""; position: absolute; right: -3px; top: -3px; width: 8px; height: 11px; background: var(--gold); border-radius: 2px; }
 
-/* conductor, front and center on a podium */
 .conductor { width: 48px; z-index: 4; }
 .conductor .hair { left: 15px; top: 2px; }
 .conductor .head { left: 16px; top: 8px; }
@@ -395,7 +518,6 @@ body {
 @keyframes horn-lift { 0%, 100% { transform: rotate(-14deg); } 50% { transform: rotate(-8deg); } }
 @keyframes head-nod { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.5px); } }
 
-/* play with feeling while a program runs */
 .scene.is-performing .violinist .bow,
 .scene.is-performing .cellist .bow { animation-duration: 0.45s; }
 .scene.is-performing .hornist .horn { animation-duration: 1s; }
@@ -413,63 +535,391 @@ body {
   background: var(--panel-2);
   flex-wrap: wrap;
 }
-.brand { display: flex; align-items: center; gap: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.brand-home {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  text-decoration: none;
+  letter-spacing: 0.14em;
+  margin-right: 4px;
+}
+.brand-home:hover,
+.brand-home:focus-visible {
+  color: var(--gold-bright);
+}
 .brand-mark {
   width: 28px; height: 28px;
-  border-radius: 4px;
-  background: var(--stage-semantic);
-  color: #fff;
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-pixel); font-size: 12px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
 }
-.brand-name { font-family: var(--font-pixel); font-size: 12px; }
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--cream);
+}
 .brand-file { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
 
 .toolbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 .sample-picker { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); }
-.sample-picker > span { font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; }
+.sample-picker > span {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
 .sample-picker select {
   font-family: var(--font-sans);
   font-size: 13px;
-  padding: 7px 8px;
-  border-radius: 4px;
-  border: 2px solid var(--border-strong);
+  padding: 7px 10px;
+  border-radius: 2px;
+  border: 1px solid var(--border-strong);
   background: var(--panel-3);
   color: var(--text-primary);
   cursor: pointer;
 }
 .sound-toggle { display: flex; align-items: center; gap: 7px; color: var(--text-secondary); cursor: pointer; }
-.sound-toggle span { font-family: var(--font-pixel); font-size: 8px; text-transform: uppercase; }
-.sound-toggle input { accent-color: var(--stage-semantic); }
+.sound-toggle span {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.sound-toggle input { accent-color: var(--gold); }
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-family: var(--font-pixel);
-  font-size: 10px;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   line-height: 1;
   padding: 11px 16px;
-  border-radius: 4px;
-  border: 2px solid var(--border-strong);
-  background: var(--panel-3);
-  color: var(--text-primary);
+  border-radius: 2px;
+  border: 1px solid var(--gold-dim);
+  background: transparent;
+  color: var(--cream);
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s, transform 0.08s;
+  transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, opacity 0.15s, transform 0.08s;
 }
-.btn:hover { background: var(--border); }
+.btn:hover {
+  background: rgba(212, 176, 106, 0.12);
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 24px rgba(212, 176, 106, 0.15);
+}
 .btn:active { transform: translateY(1px); }
 .btn:disabled { opacity: 0.5; cursor: default; }
-.btn.primary { background: var(--curtain); color: #fff; border-color: var(--curtain-dark); }
-.btn.primary:hover:not(:disabled) { opacity: 0.92; background: var(--curtain); }
+.btn.primary {
+  background: linear-gradient(180deg, rgba(107, 28, 36, 0.9), rgba(74, 18, 24, 0.95));
+  color: var(--cream);
+  border-color: var(--velvet-mid);
+}
+.btn.primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(120, 32, 40, 0.95), rgba(90, 22, 28, 1));
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 28px rgba(107, 28, 36, 0.35);
+}
 
-/* --------------------------------------------------------------- layout */
+/* ------------------------------------------------------------- workbench */
 
-.layout { display: grid; grid-template-columns: 1fr 236px; }
-.main { border-right: 1px solid var(--border); display: flex; flex-direction: column; min-width: 0; }
+body.stage-page .toolbar {
+  margin-top: 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  background: var(--panel-2);
+}
+
+.pipeline-strip {
+  margin-top: 12px;
+  padding: 12px 16px 14px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+}
+
+.pipeline-strip .section-label {
+  margin: 0 0 10px;
+}
+
+.pipeline-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.pipeline-track .pipe-row {
+  flex: 1 1 0;
+  min-width: 110px;
+  justify-content: center;
+  margin: 0;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+}
+
+.workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 14px;
+  margin-top: 14px;
+  align-items: stretch;
+  /* Fixed stage height so Score length never shoves Playbill around */
+  height: clamp(420px, 52vh, 560px);
+}
+
+.panel-ide {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.panel-ide .panel-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel-ide .editor {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Right column: Symphony stays content-sized; Playbill absorbs leftover height */
+.workbench-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.panel-symphony {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-console {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panel-symphony .panel-body {
+  padding: 12px;
+}
+
+.panel-symphony .roll-wrap {
+  height: 220px;
+  min-height: 220px;
+}
+
+.panel-console .panel-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 12px 16px 16px;
+  background: linear-gradient(180deg, #34261e 0%, #2e221a 100%);
+}
+
+.panel-console .console {
+  flex: 1;
+  min-height: 140px;
+  max-height: none;
+  overflow: auto;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.panel-head {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+}
+
+.panel-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+  line-height: 1.1;
+}
+
+.panel-sub {
+  margin: 4px 0 0;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.panel-instruments {
+  margin-top: 14px;
+}
+
+.instruments-body {
+  padding: 14px 16px 16px;
+  gap: 12px;
+}
+
+.instruments-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+
+.instruments-track .legend-row {
+  margin: 0;
+  flex: 1 1 160px;
+}
+
+.panel-instruments .hint {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: none;
+}
+
+/* ------------------------------------------------------------- artifacts */
+
+.panel-artifacts {
+  margin-top: 14px;
+}
+
+.panel-artifacts > summary {
+  list-style: none;
+}
+
+.panel-artifacts > summary::-webkit-details-marker {
+  display: none;
+}
+
+.artifacts-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.artifacts-summary::before {
+  content: "▸";
+  color: var(--gold-dim);
+  font-size: 12px;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.panel-artifacts[open] > .artifacts-summary::before {
+  transform: rotate(90deg);
+}
+
+.artifacts-summary .panel-title {
+  margin: 0;
+}
+
+.artifacts-summary .panel-sub {
+  margin: 0;
+}
+
+.artifacts-body {
+  padding: 0 16px 16px;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.artifact-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+}
+
+.artifact-tab {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--gold-dim);
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.artifact-tab:hover {
+  color: var(--gold);
+  border-color: var(--border);
+}
+
+.artifact-tab.is-active {
+  color: var(--gold-bright);
+  border-color: var(--gold-dim);
+}
+
+.artifact-out {
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.artifact-out.is-muted {
+  color: var(--text-muted);
+}
 
 /* --------------------------------------------------------------- editor */
 
@@ -486,35 +936,41 @@ body {
   min-width: 38px;
   overflow: hidden;
   white-space: pre;
+  border-right: 1px solid var(--border);
 }
-.code-wrap { position: relative; flex: 1; min-width: 0; }
+.code-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
 
-/* floating notes that pop above each token as the lexer reads it */
 .source-note-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 4; }
 
-/* tracker: a highlight cell lights up the token being read, then fades */
-.tracker-cell {
-  position: absolute;
-  border-radius: 3px;
+/* Lexeme-bound tracker — lives in the highlighted source, so it scrolls with the Score */
+.tok-track {
+  position: relative;
+  border-radius: 2px;
   background: var(--tracker);
-  box-shadow: 0 0 0 1px rgba(217, 164, 65, 0.7);
-  animation: tracker-fade 900ms ease-out forwards;
+  box-shadow: 0 0 0 1px rgba(212, 176, 106, 0.55);
 }
-@keyframes tracker-fade {
-  0% { opacity: 1; }
-  60% { opacity: 0.6; }
-  100% { opacity: 0; }
-}
-.source-note {
+
+.tok-track[data-note]::after {
+  content: attr(data-note);
   position: absolute;
+  left: 50%;
+  top: -6px;
   font-size: 16px;
   font-weight: 700;
   line-height: 1;
+  color: var(--note-color, var(--text-secondary));
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
   transform: translate(-50%, 0);
-  text-shadow: 0 1px 2px rgba(247, 238, 217, 0.95);
   animation: note-pop 2100ms ease-out forwards;
+  pointer-events: none;
   will-change: transform, opacity;
 }
+
 @keyframes note-pop {
   0% { opacity: 0; transform: translate(-50%, 8px) scale(0.6); }
   14% { opacity: 1; transform: translate(-50%, -2px) scale(1); }
@@ -528,7 +984,6 @@ body {
   font-size: 13px;
   line-height: 1.7;
   white-space: pre;
-  overflow: auto;
   tab-size: 4;
   border: 0;
 }
@@ -540,17 +995,20 @@ body {
   overflow: hidden;
 }
 #sourceInput {
-  position: relative;
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: 250px;
-  resize: vertical;
+  height: 100%;
+  min-height: 0;
+  resize: none;
+  overflow: auto;
   background: transparent;
   color: transparent;
-  caret-color: var(--text-primary);
+  caret-color: var(--gold);
   outline: none;
 }
-#sourceInput::selection { background: rgba(217, 164, 65, 0.35); }
+#sourceInput::selection { background: rgba(212, 176, 106, 0.35); }
 
 .tok-keyword { color: var(--c-keyword); }
 .tok-identifier { color: var(--c-identifier); }
@@ -580,11 +1038,12 @@ body {
 .section { padding: 14px; border-top: 1px solid var(--border); }
 .section-label {
   margin: 0 0 10px;
-  font-family: var(--font-pixel);
-  font-size: 8px;
-  letter-spacing: 0.06em;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--gold-dim);
 }
 
 .roll-wrap {
@@ -592,7 +1051,7 @@ body {
   height: 178px;
   background: var(--panel-2);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 2px;
   overflow: hidden;
 }
 .roll-wrap canvas { position: relative; width: 100%; height: 100%; display: block; z-index: 1; }
@@ -605,42 +1064,60 @@ body {
   font-family: "Noto Music", "Segoe UI Symbol", "Apple Symbols", serif;
   font-size: 108px;
   line-height: 1;
-  color: var(--text-primary);
-  opacity: 0.82;
+  color: var(--gold-dim);
+  opacity: 0.55;
   pointer-events: none;
 }
 
-.console {
+.console.playbill {
   margin: 0;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.6;
   min-height: 22px;
-  white-space: pre-wrap;
   color: var(--text-primary);
-}
-.console.is-muted { color: var(--text-muted); }
-
-/* -------------------------------------------------------------- sidebar */
-
-.sidebar {
-  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  background: var(--panel-2);
+  gap: 0.35em;
+  padding: 4px 2px;
 }
+
+.console.playbill .cue {
+  margin: 0;
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+  color: var(--cream);
+}
+
+.console.playbill .cue-code {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+
+.console.playbill.is-muted .cue,
+.console.playbill .cue-empty {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* -------------------------------------------------------------- pipeline */
+
 .pipe-row {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   padding: 6px 8px;
-  border-radius: 4px;
+  border-radius: 2px;
   border: 1px solid transparent;
   transition: background 0.15s, border-color 0.15s;
 }
-.pipe-row.active { background: var(--panel); border-color: var(--border-strong); }
+.pipe-row.active {
+  background: rgba(212, 176, 106, 0.08);
+  border-color: var(--border-strong);
+}
 .pipe-icon { width: 16px; text-align: center; font-size: 13px; color: var(--text-muted); }
 .pipe-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .pipe-label { flex: 1; }
@@ -673,22 +1150,61 @@ body {
   color: var(--text-muted);
   flex-wrap: wrap;
 }
-.site-foot a { color: var(--text-secondary); text-decoration: none; }
-.site-foot a:hover { color: var(--text-primary); text-decoration: underline; }
+.site-foot a { color: var(--gold); text-decoration: none; }
+.site-foot a:hover { color: var(--gold-bright); text-decoration: underline; }
+
+body.stage-page .site-foot {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--panel-2);
+}
 
 /* ---------------------------------------------------------- responsive */
 
+@media (max-width: 900px) {
+  .workbench {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .panel-ide {
+    height: clamp(320px, 50vh, 480px);
+  }
+  .workbench-side {
+    height: auto;
+  }
+  .panel-console {
+    flex: 0 0 auto;
+  }
+  .panel-console .console {
+    min-height: 160px;
+    max-height: 320px;
+  }
+  .panel-symphony .roll-wrap {
+    min-height: 180px;
+    height: 180px;
+  }
+}
+
 @media (max-width: 760px) {
-  .layout { grid-template-columns: 1fr; }
-  .main { border-right: 0; }
-  .sidebar { border-top: 1px solid var(--border); flex-direction: row; flex-wrap: wrap; }
-  .sidebar > div { flex: 1 1 200px; }
+  .shell { padding: 0 12px 28px; }
+  body.stage-page .shell { padding: 0 12px 28px; }
   .scene-title { max-width: 78%; }
+  body.stage-page { padding: 0; }
+  body:not(.stage-page) { padding: 12px 10px 32px; }
+  .pipeline-track .pipe-row { min-width: 46%; flex: 1 1 46%; }
+  body.stage-page .scene { height: clamp(300px, 58vw, 400px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .scene-note, .performer .head, .violinist .bow, .cellist .bow, .hornist .horn,
-  .conductor .baton-arm, .source-note {
+  .conductor .baton-arm, .tok-track[data-note]::after {
     animation: none !important;
+  }
+  .curtain,
+  .scene-inner,
+  html.walk-pending .curtain-left,
+  html.walk-pending .curtain-right {
+    transition: none !important;
   }
 }

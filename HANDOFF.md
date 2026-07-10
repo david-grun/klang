@@ -13,34 +13,39 @@ surface keywords live in `src/token.js`, which maps each to a canonical
 internal keyword so the rest of the compiler is unchanged. The code is in the
 intended `src/` layout, with language design notes in `docs/`.
 
-The showcase uses a pixel-art theater theme in a warm cream palette (parchment
-hall, red curtains with gold tiebacks and a gold proscenium arch, cream
-pleated backdrop, wood floor with a red carpet). A little classical orchestra
-in powdered wigs and tailcoats (violinist, cellist, conductor with baton,
-hornist) plays harder while a program runs. During the lexer stage a gold
-"tracker" cell lights up each token in the editor as it is read (see
-`highlightToken` in app.js), and a note also pops above it. Music
-notes drift up from the pit; during the lexer stage a note also pops above
-each token in the editor. The audio concept is "one instrument per pipeline
-stage": each stage joins in as it activates so a clean run builds up like a
-short symphony, and an error cuts the remaining instruments off. The
-instrument map (all pure Web Audio, no Tone.js / CDN):
+The site is a **hybrid**:
+
+- `/` — cinematic opera-house landing (React + Vite + Framer Motion in
+  `landing/`). Dark velvet, gold proscenium, Cormorant Garamond wordmark,
+  short pitch, one CTA to the demo. Curtains part on load (staggered, faster
+  on open); spotlight trails the pointer on fine pointers and idles with a
+  gentle drift; coarse pointers keep ambient stage light only.
+- `/play` — the opera-house workbench (`play.html` + `styles.css` +
+  `app.js` + `sound.js`). Same velvet / gold / Cormorant mood as the landing,
+  with the four orchestra sprites on a dark stage. Workbench panels: Score
+  (IDE), Symphony, Playbill (console), plus a Pipeline strip, Instruments,
+  and a collapsible Details panel (Tokens / AST / Scope). First visit in a
+  session walks onto the stage (curtains part); later visits skip it
+  (`sessionStorage`). Lexer tracker + Web Audio instruments per pipeline
+  stage. Default execute-stage membrane hits follow interpreter `print`
+  emit events (one hit per `play`, soft-capped).
+- `/about` — program notes (React page in `landing/`, built to `dist/about.html`).
+
+Instrument map (all pure Web Audio, no Tone.js / CDN):
 
 - lexer -> triangle synth
 - parser -> plucked string (Karplus-Strong)
 - scope -> soft pad
 - semantic -> bell / FM
-- execute -> percussive membrane (one hit per output line)
+- execute -> percussive membrane (one hit per `play` / print emit)
 
-The web layer lives in `index.html` (scene + workbench markup), `about.html`
-(how Klang works, how to use it, and the honest "is it a new language"
-answer), `styles.css`
-(palette + scene animations), `sound.js` (the five instruments), and `app.js`
-(editor highlighting, the Symphony canvas roll, the pipeline sidebar, and the
-run orchestration that drives visuals and audio together off the real
-`pipeline.run` result). It is intentionally static and deployable: no package
-install is required, and `npm run build` copies the browser showcase into
-`dist/`.
+The **Canon (Pachelbel)** and **Ode to Joy (Beethoven)** samples override those
+with orchestral arrangements: voices join as each pipeline stage passes
+(violin theme, cello bass, continuo pad, viola inner voice, bass cadence).
+
+`npm run build` builds the React landing into `dist/`, then copies the vanilla
+demo assets alongside it. The language runtime and demo remain dependency-free;
+only `landing/` has npm packages.
 
 ## Layout
 
@@ -51,7 +56,21 @@ klang/
   package.json
   README.md
   HANDOFF.md
-  src/
+  play.html          # vanilla workbench
+  styles.css
+  app.js
+  sound.js
+  build-site.js
+  vercel.json
+  landing/           # React opera landing + about page (Vite MPA)
+    about.html
+    index.html
+    src/
+      about-main.tsx
+      pages/AboutPage.tsx
+      components/
+      styles/
+  src/               # compiler
     environment.js
     errors.js
     interpreter.js
@@ -66,17 +85,7 @@ klang/
     LANGUAGE_DESIGN.md
   examples/
     hello.klang
-    types.klang
-    functions.klang
-    oop.klang
-    fizzbuzz.klang
-    errors/
-      lexer.klang
-      syntax.klang
-      undeclared.klang
-      typemismatch.klang
-      badcompare.klang
-      runtime.klang
+    …
 ```
 
 ## Run commands
@@ -86,28 +95,27 @@ node test.js
 node klang.js examples/hello.klang
 node klang.js --stages examples/errors/undeclared.klang
 node klang.js --tokens examples/hello.klang
-npm run dev
-npm run build
+npm run dev          # Vite: landing at / , demo at /play
+npm run build        # hybrid static site → dist/
 ```
 
 Expected test result: `32 passed, 0 failed`.
 
-`npm run dev` serves the showcase website locally. `npm run build` writes a
-static `dist/` folder that can be deployed later to a static host.
+`npm run dev` serves the React landing and proxies/serves the vanilla demo
+from the repo root. `npm run build` writes `dist/` for static hosting (Vercel).
 
 ## Next useful steps
 
-1. Optionally re-expose the raw stage artifacts (tokens / AST / scope) in a
-   collapsible "details" panel; the old inspector tabs were dropped in the
-   pixel-art redesign to match the focused mockup.
-2. Use the interpreter `emit` events (already collected in `app.js`) to drive
-   finer-grained execute-stage audio, e.g. one membrane hit per real print
-   rather than per output line.
-3. Add a share/deploy step for `dist/` (static host) and a screenshot/preview
-   in the README.
+None blocking. Optional later polish: nested function scopes in the Details
+panel (resolver currently returns module scope only), or richer execute-stage
+visuals driven by assign/setattr emit events.
 
 ## Caveats
 
 The type checker is gradual, not fully static. It catches definite type errors
 before execution and lets runtime checks handle cases that cannot be inferred
 statically, especially function returns and attribute reads.
+
+Dev note: repo-root `/src/*.js` is the compiler. The Vite app lives under
+`landing/src/`. The Vite middleware serves root `src/*.js` for the demo so the
+paths do not collide with the landing bundle.
